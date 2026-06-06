@@ -1,0 +1,393 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		22EEA605DA109D383423C9F8 /* FocusTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */; };
+		2839B04FDD044307A7A29F91 /* FocusModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */; };
+		639BB24FC62E98327CE2491D /* TimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5767478094226883F9531A /* TimerState.swift */; };
+		74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13D1C7F95D15E2ED4489A67E /* Assets.xcassets */; };
+		78F07D0DBEA13FA9A18BB163 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D105EC58FF850157F9F01A /* MenuBarLabel.swift */; };
+		B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037EDD114FE0F742109FAB3 /* NotificationManager.swift */; };
+		E38B5089E15ECABED840250F /* MenuContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */; };
+		E4A6158C59082BEA5162AC79 /* FocusPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F2824A2999E00238CD7405 /* FocusPhase.swift */; };
+		E800D879B5258C9A49BE2FF2 /* DurationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */; };
+		F6FE2A3BEA13B2C4B64B4934 /* TimerEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 460A455D4EB6652487D93A00 /* TimerEngine.swift */; };
+		FD0FD92FB1ABD43B0147D95C /* FocusTimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F8DBB34E6FF3399F5DFD1 /* FocusTimerModel.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		07F2824A2999E00238CD7405 /* FocusPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPhase.swift; sourceTree = "<group>"; };
+		116F8DBB34E6FF3399F5DFD1 /* FocusTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerModel.swift; sourceTree = "<group>"; };
+		13D1C7F95D15E2ED4489A67E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerApp.swift; sourceTree = "<group>"; };
+		460A455D4EB6652487D93A00 /* TimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngine.swift; sourceTree = "<group>"; };
+		69D105EC58FF850157F9F01A /* MenuBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabel.swift; sourceTree = "<group>"; };
+		73E4000C3A062EDEADEDCF13 /* FocusTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		820B83D734F7FAABDA06CD2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		B037EDD114FE0F742109FAB3 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		C9456AFF38E6818AA650D60C /* FocusTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusTimer.entitlements; sourceTree = "<group>"; };
+		D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
+		E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusModeController.swift; sourceTree = "<group>"; };
+		EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContent.swift; sourceTree = "<group>"; };
+		FB5767478094226883F9531A /* TimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerState.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		639571966BFCF055293A50F4 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */,
+				69D105EC58FF850157F9F01A /* MenuBarLabel.swift */,
+				EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		81790E6368259004957EBEBA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				07F2824A2999E00238CD7405 /* FocusPhase.swift */,
+				116F8DBB34E6FF3399F5DFD1 /* FocusTimerModel.swift */,
+				FB5767478094226883F9531A /* TimerState.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		ADD47AC2C2FAB1ACF81B049D /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				13D1C7F95D15E2ED4489A67E /* Assets.xcassets */,
+				C9456AFF38E6818AA650D60C /* FocusTimer.entitlements */,
+				820B83D734F7FAABDA06CD2E /* Info.plist */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		B298BBB03474A3B8DB661500 /* FocusTimer */ = {
+			isa = PBXGroup;
+			children = (
+				393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */,
+				81790E6368259004957EBEBA /* Model */,
+				ADD47AC2C2FAB1ACF81B049D /* Resources */,
+				B3EA90A834022C16534CC685 /* Services */,
+				639571966BFCF055293A50F4 /* Views */,
+			);
+			path = FocusTimer;
+			sourceTree = "<group>";
+		};
+		B3EA90A834022C16534CC685 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */,
+				B037EDD114FE0F742109FAB3 /* NotificationManager.swift */,
+				460A455D4EB6652487D93A00 /* TimerEngine.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E884C76B3FF3F338D0715D6E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				73E4000C3A062EDEADEDCF13 /* FocusTimer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FF62F95BEB0457027151E118 = {
+			isa = PBXGroup;
+			children = (
+				B298BBB03474A3B8DB661500 /* FocusTimer */,
+				E884C76B3FF3F338D0715D6E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		23841C0983EFA5B7F2B8D20B /* FocusTimer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8E1DCF6B163B1E840C13145A /* Build configuration list for PBXNativeTarget "FocusTimer" */;
+			buildPhases = (
+				1E0A5071623932B0B6BEBB07 /* Sources */,
+				336CAA0DE8F48C5A8295D88B /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = FocusTimer;
+			packageProductDependencies = (
+			);
+			productName = FocusTimer;
+			productReference = 73E4000C3A062EDEADEDCF13 /* FocusTimer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		12D45FD891DBCCA2475D15BF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+					23841C0983EFA5B7F2B8D20B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 1D5A400D1DC6CE2FE3EEAE7F /* Build configuration list for PBXProject "FocusTimer" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = FF62F95BEB0457027151E118;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = E884C76B3FF3F338D0715D6E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				23841C0983EFA5B7F2B8D20B /* FocusTimer */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		336CAA0DE8F48C5A8295D88B /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1E0A5071623932B0B6BEBB07 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E800D879B5258C9A49BE2FF2 /* DurationPicker.swift in Sources */,
+				2839B04FDD044307A7A29F91 /* FocusModeController.swift in Sources */,
+				E4A6158C59082BEA5162AC79 /* FocusPhase.swift in Sources */,
+				22EEA605DA109D383423C9F8 /* FocusTimerApp.swift in Sources */,
+				FD0FD92FB1ABD43B0147D95C /* FocusTimerModel.swift in Sources */,
+				78F07D0DBEA13FA9A18BB163 /* MenuBarLabel.swift in Sources */,
+				E38B5089E15ECABED840250F /* MenuContent.swift in Sources */,
+				B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */,
+				F6FE2A3BEA13B2C4B64B4934 /* TimerEngine.swift in Sources */,
+				639BB24FC62E98327CE2491D /* TimerState.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		6F44B062B9F09611EAA43BBC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusTimer/Resources/FocusTimer.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FocusTimer/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.FocusTimer;
+				PRODUCT_NAME = FocusTimer;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		9ECA60351CBFF5271AF6C1F5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = FocusTimer/Resources/FocusTimer.entitlements;
+				COMBINE_HIDPI_IMAGES = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = FocusTimer/Resources/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.FocusTimer;
+				PRODUCT_NAME = FocusTimer;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		AE6F520F3E5C4EC1687990A6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Debug;
+		};
+		FE47AAEF720C75C3C87B9DC0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = "";
+				ENABLE_HARDENED_RUNTIME = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_TREAT_WARNINGS_AS_ERRORS = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_TREAT_WARNINGS_AS_ERRORS = NO;
+				SWIFT_VERSION = 5.9;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1D5A400D1DC6CE2FE3EEAE7F /* Build configuration list for PBXProject "FocusTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				AE6F520F3E5C4EC1687990A6 /* Debug */,
+				FE47AAEF720C75C3C87B9DC0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		8E1DCF6B163B1E840C13145A /* Build configuration list for PBXNativeTarget "FocusTimer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F44B062B9F09611EAA43BBC /* Debug */,
+				9ECA60351CBFF5271AF6C1F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 12D45FD891DBCCA2475D15BF /* Project object */;
+}

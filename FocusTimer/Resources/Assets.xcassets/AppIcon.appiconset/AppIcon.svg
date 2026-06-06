@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <defs>
+    <!-- macOS-style squircle background gradient: deep indigo → violet (Focus 配色) -->
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#3D2C8D"/>
+      <stop offset="55%" stop-color="#5B3FBF"/>
+      <stop offset="100%" stop-color="#7A5BD6"/>
+    </linearGradient>
+    <!-- 顶部高光,营造玻璃质感 -->
+    <radialGradient id="shine" cx="0.35" cy="0.18" r="0.65">
+      <stop offset="0%"  stop-color="#FFFFFF" stop-opacity="0.32"/>
+      <stop offset="60%" stop-color="#FFFFFF" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0"/>
+    </radialGradient>
+    <!-- 进度弧描边渐变 -->
+    <linearGradient id="arc" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"  stop-color="#FFD27A"/>
+      <stop offset="100%" stop-color="#FF8A5B"/>
+    </linearGradient>
+    <!-- macOS Big Sur+ squircle path (r ≈ 22.37%) -->
+    <clipPath id="squircle">
+      <path d="M512,0
+               C 88,0 0,88 0,512
+               C 0,936 88,1024 512,1024
+               C 936,1024 1024,936 1024,512
+               C 1024,88 936,0 512,0 Z"/>
+    </clipPath>
+  </defs>
+
+  <g clip-path="url(#squircle)">
+    <!-- 背景 -->
+    <rect width="1024" height="1024" fill="url(#bg)"/>
+    <rect width="1024" height="1024" fill="url(#shine)"/>
+
+    <!-- 装饰光斑(柔化背景,小尺寸时不显眼) -->
+    <circle cx="180" cy="200" r="140" fill="#FFFFFF" opacity="0.06"/>
+    <circle cx="860" cy="880" r="180" fill="#FFFFFF" opacity="0.05"/>
+
+    <!-- 时钟外环(双层,强化 focus "光环" 隐喻) -->
+    <circle cx="512" cy="528" r="320" fill="none" stroke="#FFFFFF" stroke-opacity="0.18" stroke-width="6"/>
+    <circle cx="512" cy="528" r="288" fill="none" stroke="#FFFFFF" stroke-opacity="0.85" stroke-width="14"/>
+
+    <!-- 12/3/6/9 刻度 -->
+    <g stroke="#FFFFFF" stroke-width="14" stroke-linecap="round" opacity="0.9">
+      <line x1="512" y1="232" x2="512" y2="268"/>
+      <line x1="808" y1="528" x2="772" y2="528"/>
+      <line x1="512" y1="824" x2="512" y2="788"/>
+      <line x1="216" y1="528" x2="252" y2="528"/>
+    </g>
+
+    <!-- 进度弧:从 12 点顺时针 75% -->
+    <path d="M 512,228
+             A 300,300 0 1 1 212,528"
+          fill="none" stroke="url(#arc)" stroke-width="22" stroke-linecap="round"/>
+
+    <!-- 时针 + 分针(指向 10:10 的经典营销位) -->
+    <line x1="512" y1="528" x2="380" y2="428" stroke="#FFFFFF" stroke-width="20" stroke-linecap="round"/>
+    <line x1="512" y1="528" x2="640" y2="460" stroke="#FFFFFF" stroke-width="14" stroke-linecap="round"/>
+
+    <!-- 中心轴 -->
+    <circle cx="512" cy="528" r="16" fill="#FFFFFF"/>
+    <circle cx="512" cy="528" r="7"  fill="#5B3FBF"/>
+
+    <!-- Focus 月牙:右上角,象征勿扰/专注 -->
+    <g transform="translate(740,260)">
+      <circle r="92" fill="#0F0B2E" opacity="0.35"/>
+      <path d="M 30,-50
+               A 60,60 0 1 0 30,50
+               A 46,46 0 1 1 30,-50 Z"
+            fill="#FFFFFF"/>
+    </g>
+  </g>
+</svg>

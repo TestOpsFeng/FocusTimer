@@ -1,0 +1,134 @@
+# FocusTimer
+
+macOS 14+ 菜单栏倒计时应用,倒计时期间自动启用系统「专注模式」,结束或重置时自动关闭。
+
+## 功能
+
+- **菜单栏倒计时**:数字直接显示在 macOS 菜单栏,空闲时显示 `Focus 60:00`,运行中显示 `00:42:13`。
+- **可配置时长**:默认 1 小时,提供 15 / 30 / 45 / 60 / 90 分钟快捷按钮,以及 1-1440 分钟的自定义输入。
+- **Focus 自动切换**:开始 → 启用专注;暂停 → 专注保持;重置 / 完成 → 关闭专注。
+- **暂停 / 继续 / 重置**:倒计时可中断,恢复后从冻结的剩余时间继续,专注状态保持。
+- **系统通知**:倒计时完成时弹出系统通知。
+- **Focus 状态徽章**:弹窗中实时显示系统当前是否处于 Focus 状态(需授权)。
+
+## 关键技术决策:为什么用 Shortcuts
+
+**macOS 没有任何公开的 API 允许第三方应用编程启用/关闭 Focus 模式。** `Intents` 框架中的 `INFocusStatusCenter` 是**只读**的(用于读取用户是否专注,如 Messages 的"对方正在专注中"提示),没有 setter。
+
+本应用采用 Apple 官方提供的 `shortcuts://` URL scheme 触发用户在 **Shortcuts App** 中预配置的快捷指令来切换 Focus。**这要求用户先在 Shortcuts App 中创建两个简单的 Shortcut**,但比使用私有 API(不稳定 + App Store 拒绝)要可靠得多。
+
+## 前置设置(只需一次)
+
+在 **Shortcuts** App 中创建两个 Shortcut,分别命名 **"开启专注"** 和 **"关闭专注"**(名字可在弹窗中修改):
+
+### 开启专注
+1. 打开 Shortcuts App → 顶部 **+** 新建
+2. 添加动作 **"设置专注模式"** → 选择「启用」,选择你希望使用的专注模式(如「勿扰模式」或自定义的工作模式)
+3. 保存为 **"开启专注"**
+
+### 关闭专注
+1. 同样新建,添加 **"设置专注模式"** → 选择「关闭」
+2. 保存为 **"关闭专注"**
+
+> 如果你的系统语言是英文,把 Shortcut 名字改成 `Enable Focus` / `Disable Focus`,然后在弹窗的"Focus 快捷指令设置"区域里改名称。
+
+## 构建
+
+需要 macOS、Xcode 15+ 和 `xcodegen`(`brew install xcodegen`)。
+
+```bash
+# 在项目根目录
+xcodegen generate
+open FocusTimer.xcodeproj
+# Xcode 中按 Cmd-R 运行
+```
+
+或者纯命令行:
+```bash
+xcodebuild -project FocusTimer.xcodeproj -scheme FocusTimer -configuration Debug build
+open ~/Library/Developer/Xcode/DerivedData/FocusTimer-*/Build/Products/Debug/FocusTimer.app
+```
+
+## 使用
+
+1. 启动 App,菜单栏出现 `Focus 60:00`。
+2. 点击菜单栏图标 → 弹窗中调整时长 → 点击 **开始**。
+3. 系统会弹出权限请求:
+   - **Shortcuts 权限**:确认运行 "开启专注" 快捷指令(首次会请求)。
+   - **通知权限**:允许接收完成通知。
+4. 倒计时开始,菜单栏显示剩余时间,系统专注模式被启用。
+5. 暂停 → 倒计时冻结但 Focus 保持;继续 → 从冻结值继续。
+6. 重置 → 倒计时清零,Focus 关闭。
+7. 自然完成 → 通知弹出,Focus 关闭。
+
+## 项目结构
+
+```
+FocusTimer/
+├── project.yml                 # XcodeGen 项目定义
+├── FocusTimer.xcodeproj/       # 由 xcodegen 生成
+├── FocusTimer/
+│   ├── FocusTimerApp.swift     # @main + MenuBarExtra 场景
+│   ├── Model/
+│   │   ├── FocusPhase.swift    # 状态机:idle / running(endDate) / paused(remaining)
+│   │   ├── TimerState.swift    # 状态结构体
+│   │   └── FocusTimerModel.swift  # @Observable @MainActor 视图模型
+│   ├── Services/
+│   │   ├── TimerEngine.swift          # Task.sleep 驱动的 1Hz 滴答
+│   │   ├── FocusModeController.swift  # INFocusStatusCenter 读 + Shortcuts URL 写
+│   │   └── NotificationManager.swift  # UNUserNotificationCenter 封装
+│   ├── Views/
+│   │   ├── MenuBarLabel.swift   # 菜单栏文字
+│   │   ├── MenuContent.swift    # 弹窗主体
+│   │   └── DurationPicker.swift # 时长选择 UI
+│   └── Resources/
+│       ├── Assets.xcassets
+│       ├── Info.plist           # NSFocusStatusUsageDescription
+│       └── FocusTimer.entitlements
+└── README.md
+```
+
+## 调试日志
+
+所有关键节点都通过 `os.Logger` 输出(subsystem `com.example.FocusTimer`),用 Console.app 过滤:
+
+```
+log show --predicate 'subsystem == "com.example.FocusTimer"' --info --debug --last 5m
+```
+
+或在 Console.app 中搜索 `subsystem:com.example.FocusTimer`。
+
+主要日志类别:
+- `FocusTimerModel`:状态转换(start/pause/resume/reset/complete)
+- `TimerEngine`:滴答启动/停止
+- `FocusModeController`:Focus 授权 + Shortcut 触发
+- `NotificationManager`:通知权限 + 调度
+- `App`:启动
+
+## 已知限制
+
+1. **Shortcut 未配置时静默失败**:如果用户没有创建对应名字的 Shortcut,`NSWorkspace.shared.open` 会返回 false 并记日志,但不弹错误(避免打扰用户)。建议在 README 中提示用户。
+2. **强制退出 App 时 Focus 不会自动恢复**:v1 范围不处理 `NSApplicationWillTerminate` 钩子,异常退出后 Focus 可能保持开启。
+3. **未配置任何 Focus 模式时 Shortcut 内的"设置专注模式"动作会失败** — 在 Shortcuts App 的运行日志里可以看到。
+4. **`@Observable` + 每秒 tick**:`MenuBarLabel` 每秒重绘,但 `DateComponentsFormatter` 复用,无性能问题。
+5. **App Sandbox 默认关闭**:本地 dev 阶段不开启。分发时需要重新评估 Focus API 在沙箱下的行为。
+
+## 状态机
+
+```
+       start()              pause()            resume()         (自然完成 / reset())
+idle ────────▶ running ──────────▶ paused ──────────▶ running ──────────────────┐
+  ▲                │                                                       │
+  │                │ reset()                                              │
+  │                ▼                                                       │
+  │              idle ◀──────────────────────────────────────────────────── reset()
+  │                                                                        │
+  │                                                                        ▼
+  └────────────────────────────────────────────────── idle ◀── (handleCompletion)
+```
+
+- **idle → running**:`start()`,endDate = now + totalDuration,通知已调度
+- **running → paused**:`pause()`,remaining = endDate - now,通知取消,Focus 保持
+- **paused → running**:`resume()`,endDate = now + remaining,通知重调度
+- **任意 → idle (reset)**:`reset()`,通知取消,Focus 关闭
+- **running → idle (完成)**:剩余时间到 0,通知由系统触发,Focus 关闭
