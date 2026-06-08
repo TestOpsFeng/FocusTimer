@@ -11,8 +11,9 @@
 //  - reset  : 触发 Shortcut 关闭 Focus,回到 idle(取消通知,保留 totalDuration)
 //  - 完成  : 触发 Shortcut 关闭 Focus,通知由系统触发
 //
-//  Focus 控制策略:macOS 无公开 API 编程启用/禁用 Focus,故通过 Shortcuts App 的
-//  "shortcuts://" URL scheme 触发用户在 Shortcuts 中预配置的快捷指令。名称在 UI 中可改。
+//  Focus 控制策略:macOS 无公开 API 编程启用/禁用 Focus,故通过 /usr/bin/shortcuts
+//  CLI(Process 调用)触发用户在 Shortcuts App 中预配置的快捷指令。该 CLI 直接与
+//  com.apple.shortcuts 后台服务通信,不依赖 Shortcuts GUI 应用是否运行。名称在 UI 中可改。
 //
 
 import Foundation
@@ -136,8 +137,10 @@ final class FocusTimerModel {
             )
             log.info("已请求启用 Focus(通过 Shortcut '\(self.enableShortcut, privacy: .public)')")
         } catch {
-            log.error("启用 Focus 失败: \(error.localizedDescription, privacy: .public)")
-            // 不阻塞计时,但用户会看到错误
+            let message = (error as NSError).localizedDescription
+            log.error("启用 Focus 失败: \(message, privacy: .public)")
+            await notifications.sendNow(title: "Focus 切换失败", body: message)
+            // 不阻塞计时
         }
 
         // 1.5) 更新 appFocusOn 徽章(无论 Shortcut 是否成功,意图已下达)
@@ -205,7 +208,9 @@ final class FocusTimerModel {
             )
             log.info("已请求关闭 Focus(通过 Shortcut '\(self.disableShortcut, privacy: .public)')")
         } catch {
-            log.error("关闭 Focus 失败: \(error.localizedDescription, privacy: .public)")
+            let message = (error as NSError).localizedDescription
+            log.error("关闭 Focus 失败: \(message, privacy: .public)")
+            await notifications.sendNow(title: "Focus 切换失败", body: message)
         }
 
         // 更新 appFocusOn 徽章
@@ -261,7 +266,9 @@ final class FocusTimerModel {
             )
             log.info("完成:已请求关闭 Focus")
         } catch {
-            log.error("完成:关闭 Focus 失败: \(error.localizedDescription, privacy: .public)")
+            let message = (error as NSError).localizedDescription
+            log.error("完成:关闭 Focus 失败: \(message, privacy: .public)")
+            await notifications.sendNow(title: "Focus 切换失败", body: message)
         }
 
         // 更新 appFocusOn 徽章

@@ -171,7 +171,18 @@ xcodegen generate
 
 ### 重新打开后 Shortcut 失败 / Focus 没切换
 
-App 依赖 Shortcuts App 里的"开启专注"和"关闭专注"两个 Shortcut。如果 Shortcut 被改名或删除,功能失效。打开弹窗的"Focus 快捷指令设置"区域修改名称。
+App 通过 `/usr/bin/shortcuts` CLI(而非 `shortcuts://` URL scheme)触发 Shortcuts App 中预配置的快捷指令。该路径**不要求** Shortcuts App GUI 先运行——首次启动后即可直接切换专注,无需先手动打开 Shortcuts App。
+
+若 Focus 仍然没切换,可能原因及排查:
+
+1. **Shortcut 不存在 / 改名 / 拼写不一致**:本应用会**通过系统通知弹窗**告知失败原因,详情写入 `os.Logger`:
+   ```bash
+   /usr/bin/log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m
+   ```
+   在弹窗的"Focus 快捷指令设置"区域检查名称是否与 Shortcuts App 中一致。
+2. **手动验证 Shortcut 本身**:在 Terminal 中执行 `shortcuts run "开启专注"`,若报错说明 Shortcut 本身有问题(如「设置专注模式」动作被删除、Shortcut 私有、所在 iCloud 账户未登录等)。
+3. **首次运行的 Shortcuts 自动化权限**:首次执行时 macOS 会弹"FocusTimer wants to run shortcut…"的自动化授权,**必须点"允许"**。误点"拒绝"需到「系统设置 → 隐私与安全性 → 自动化」中重新允许。
+4. **未配置任何系统 Focus 模式**:在「系统设置 → 专注」中至少需要存在一个 Focus(勿扰/工作/个人等),否则「设置专注模式」动作无可用目标。
 
 ---
 
@@ -187,7 +198,7 @@ App 依赖 Shortcuts App 里的"开启专注"和"关闭专注"两个 Shortcut。
 
 3. **App Sandbox 关闭**
    - `Resources/FocusTimer.entitlements` 中 `com.apple.security.app-sandbox: false`
-   - 本地使用无问题。**如要上架 Mac App Store,需重新开启沙箱并调整 API 行为**(`INFocusStatusCenter` 在沙箱下表现可能不同;`shortcuts://` URL scheme 行为可能受限)
+   - 本地使用无问题。**如要上架 Mac App Store,需重新开启沙箱并调整 API 行为**(`INFocusStatusCenter` 在沙箱下表现可能不同;`/usr/bin/shortcuts` CLI 的子进程调用也需额外评估沙箱策略)。
 
 4. **未做 Apple 公证(notarization)**
    - 较新 macOS 上 Gatekeeper 可能持续拦截(右键放行可解)
@@ -234,8 +245,8 @@ rm -f ~/Library/Preferences/com.example.FocusTimer.plist
 | `App` | 启动/退出 |
 | `FocusTimerModel` | 状态机转换(start/pause/resume/reset/complete) + appFocusOn 变化 |
 | `TimerEngine` | 滴答启动/停止 |
-| `FocusModeController` | Focus 授权 + Shortcut 触发 |
-| `NotificationManager` | 通知权限 + 调度/取消 |
+| `FocusModeController` | Focus 授权 + 触发 Shortcut(走 `/usr/bin/shortcuts` CLI) |
+| `NotificationManager` | 通知权限 + 调度/取消 + 失败时即时弹窗 |
 
 按类别过滤:
 ```bash

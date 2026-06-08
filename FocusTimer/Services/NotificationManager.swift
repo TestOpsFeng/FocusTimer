@@ -23,6 +23,9 @@ protocol NotificationManaging {
 
     /// 取消指定 id 的通知
     func cancel(id: String) async throws
+
+    /// 立即发送一条本地通知(无 trigger),用于运行时错误提示
+    func sendNow(title: String, body: String) async
 }
 
 enum NotificationManager {
@@ -69,6 +72,23 @@ enum NotificationManager {
         func cancel(id: String) async throws {
             log.debug("取消通知 id=\(id, privacy: .public)")
             center.removePendingNotificationRequests(withIdentifiers: [id])
+        }
+
+        func sendNow(title: String, body: String) async {
+            let content = UNMutableNotificationContent()
+            content.title = title
+            content.body = body
+            content.sound = .default
+            let request = UNNotificationRequest(
+                identifier: UUID().uuidString,
+                content: content,
+                trigger: nil   // nil = 立即投递
+            )
+            do {
+                try await center.add(request)
+            } catch {
+                log.error("发送即时通知失败: \(error.localizedDescription, privacy: .public)")
+            }
         }
     }
 }

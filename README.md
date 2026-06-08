@@ -15,7 +15,9 @@ macOS 14+ 菜单栏倒计时应用,倒计时期间自动启用系统「专注模
 
 **macOS 没有任何公开的 API 允许第三方应用编程启用/关闭 Focus 模式。** `Intents` 框架中的 `INFocusStatusCenter` 是**只读**的(用于读取用户是否专注,如 Messages 的"对方正在专注中"提示),没有 setter。
 
-本应用采用 Apple 官方提供的 `shortcuts://` URL scheme 触发用户在 **Shortcuts App** 中预配置的快捷指令来切换 Focus。**这要求用户先在 Shortcuts App 中创建两个简单的 Shortcut**,但比使用私有 API(不稳定 + App Store 拒绝)要可靠得多。
+本应用通过 macOS 自带的 `/usr/bin/shortcuts` CLI(`Process` 调用)触发用户在 **Shortcuts App** 中预配置的快捷指令来切换 Focus。**这要求用户先在 Shortcuts App 中创建两个简单的 Shortcut**,但比使用私有 API(不稳定 + App Store 拒绝)要可靠得多。
+
+> 旧版本使用 `shortcuts://` URL scheme 触发,首次启动后需要先手动打开 Shortcuts App 才能让系统专注模式生效。改用 CLI 后,该问题已修复:`shortcuts` CLI 直接与 `com.apple.shortcuts` 后台服务通信,**不依赖 Shortcuts GUI 应用是否运行**。
 
 ## 前置设置(只需一次)
 
@@ -54,7 +56,7 @@ open ~/Library/Developer/Xcode/DerivedData/FocusTimer-*/Build/Products/Debug/Foc
 1. 启动 App,菜单栏出现 `Focus 60:00`。
 2. 点击菜单栏图标 → 弹窗中调整时长 → 点击 **开始**。
 3. 系统会弹出权限请求:
-   - **Shortcuts 权限**:确认运行 "开启专注" 快捷指令(首次会请求)。
+   - **Shortcuts 自动化权限**:首次运行 "开启专注" 时会请求(只弹一次)。**无需先手动打开 Shortcuts App。**
    - **通知权限**:允许接收完成通知。
 4. 倒计时开始,菜单栏显示剩余时间,系统专注模式被启用。
 5. 暂停 → 倒计时冻结但 Focus 保持;继续 → 从冻结值继续。
@@ -75,8 +77,8 @@ FocusTimer/
 │   │   └── FocusTimerModel.swift  # @Observable @MainActor 视图模型
 │   ├── Services/
 │   │   ├── TimerEngine.swift          # Task.sleep 驱动的 1Hz 滴答
-│   │   ├── FocusModeController.swift  # INFocusStatusCenter 读 + Shortcuts URL 写
-│   │   └── NotificationManager.swift  # UNUserNotificationCenter 封装
+│   │   ├── FocusModeController.swift  # INFocusStatusCenter 读 + /usr/bin/shortcuts CLI 写
+│   │   └── NotificationManager.swift  # UNUserNotificationCenter 封装(含失败通知)
 │   ├── Views/
 │   │   ├── MenuBarLabel.swift   # 菜单栏文字
 │   │   ├── MenuContent.swift    # 弹窗主体
@@ -107,7 +109,7 @@ log show --predicate 'subsystem == "com.example.FocusTimer"' --info --debug --la
 
 ## 已知限制
 
-1. **Shortcut 未配置时静默失败**:如果用户没有创建对应名字的 Shortcut,`NSWorkspace.shared.open` 会返回 false 并记日志,但不弹错误(避免打扰用户)。建议在 README 中提示用户。
+1. **Shortcut 触发失败时通过系统通知提示**:本应用通过 `/usr/bin/shortcuts` CLI 调用用户在 Shortcuts App 中预配置的「开启专注」/「关闭专注」。若 Shortcut 不存在、改名或未含「设置专注模式」动作,CLI 退出非 0,本应用会**通过系统通知弹窗**告知用户,并把 stderr 详情记录到 `os.Logger`(category=`FocusModeController`)。查看方式:`log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m`。
 2. **强制退出 App 时 Focus 不会自动恢复**:v1 范围不处理 `NSApplicationWillTerminate` 钩子,异常退出后 Focus 可能保持开启。
 3. **未配置任何 Focus 模式时 Shortcut 内的"设置专注模式"动作会失败** — 在 Shortcuts App 的运行日志里可以看到。
 4. **`@Observable` + 每秒 tick**:`MenuBarLabel` 每秒重绘,但 `DateComponentsFormatter` 复用,无性能问题。
