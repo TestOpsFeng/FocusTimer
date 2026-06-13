@@ -179,8 +179,8 @@ struct ShortcutInstallerTests {
 
     @Test("ShortcutRole: 资源名拼装")
     func testShortcutRoleResourceNames() {
-        #expect(ShortcutRole.enable.bundledResourceName == "EnableFocus")
-        #expect(ShortcutRole.disable.bundledResourceName == "DisableFocus")
+        #expect(ShortcutRole.enable.bundledResourceName == "开始专注")
+        #expect(ShortcutRole.disable.bundledResourceName == "关闭专注")
     }
 
     // MARK: - openImportDialog

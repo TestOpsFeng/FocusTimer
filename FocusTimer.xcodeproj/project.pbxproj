@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		14F2B2B0697DE280BE51ABF8 /* 关闭专注.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = 00CAF80E1AE60E0A23933EFB /* 关闭专注.shortcut */; };
 		22EEA605DA109D383423C9F8 /* FocusTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */; };
 		24C22C212D453B5A37E77759 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B685555669D3866AA935507 /* ProcessRunner.swift */; };
 		2839B04FDD044307A7A29F91 /* FocusModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */; };
 		3D2EE73A994161B2085A83D0 /* ShortcutInstallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578CA45EACC928540874BAC5 /* ShortcutInstallerTests.swift */; };
+		439942E9666219E0EFEE3CB3 /* 开始专注.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = F78245296509CE4C78D23FEC /* 开始专注.shortcut */; };
 		639BB24FC62E98327CE2491D /* TimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5767478094226883F9531A /* TimerState.swift */; };
 		74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13D1C7F95D15E2ED4489A67E /* Assets.xcassets */; };
 		78F07D0DBEA13FA9A18BB163 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D105EC58FF850157F9F01A /* MenuBarLabel.swift */; };
-		AD58FDF9E2F8B0B2A4419B26 /* DisableFocus.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = F26678C7BB7454D977D41C1E /* DisableFocus.shortcut */; };
 		B2ACCF9255F9F740509AC888 /* ShortcutInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */; };
 		B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037EDD114FE0F742109FAB3 /* NotificationManager.swift */; };
 		C54224011217D4583ECCD9F6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 66402E5B54DE912F68A42009 /* README.md */; };
-		DB413FE37AA3FAB697E139A0 /* EnableFocus.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = 42A1293C05B2943841285CB9 /* EnableFocus.shortcut */; };
 		E0897013748094A760A1FF96 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245C747689FCB3524EBD63FA /* ProcessRunnerTests.swift */; };
 		E38B5089E15ECABED840250F /* MenuContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */; };
 		E4A6158C59082BEA5162AC79 /* FocusPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F2824A2999E00238CD7405 /* FocusPhase.swift */; };
@@ -38,13 +38,13 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		00CAF80E1AE60E0A23933EFB /* 关闭专注.shortcut */ = {isa = PBXFileReference; path = "关闭专注.shortcut"; sourceTree = "<group>"; };
 		07F2824A2999E00238CD7405 /* FocusPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPhase.swift; sourceTree = "<group>"; };
 		0B685555669D3866AA935507 /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		116F8DBB34E6FF3399F5DFD1 /* FocusTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerModel.swift; sourceTree = "<group>"; };
 		13D1C7F95D15E2ED4489A67E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		245C747689FCB3524EBD63FA /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
 		393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerApp.swift; sourceTree = "<group>"; };
-		42A1293C05B2943841285CB9 /* EnableFocus.shortcut */ = {isa = PBXFileReference; path = EnableFocus.shortcut; sourceTree = "<group>"; };
 		460A455D4EB6652487D93A00 /* TimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngine.swift; sourceTree = "<group>"; };
 		578CA45EACC928540874BAC5 /* ShortcutInstallerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutInstallerTests.swift; sourceTree = "<group>"; };
 		5FED0A20EC2C7F358FE2A17C /* FocusTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -58,7 +58,7 @@
 		D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
 		E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusModeController.swift; sourceTree = "<group>"; };
 		EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContent.swift; sourceTree = "<group>"; };
-		F26678C7BB7454D977D41C1E /* DisableFocus.shortcut */ = {isa = PBXFileReference; path = DisableFocus.shortcut; sourceTree = "<group>"; };
+		F78245296509CE4C78D23FEC /* 开始专注.shortcut */ = {isa = PBXFileReference; path = "开始专注.shortcut"; sourceTree = "<group>"; };
 		FB5767478094226883F9531A /* TimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -106,8 +106,8 @@
 		AE6DAB0A56476580C1F2425F /* Shortcuts */ = {
 			isa = PBXGroup;
 			children = (
-				F26678C7BB7454D977D41C1E /* DisableFocus.shortcut */,
-				42A1293C05B2943841285CB9 /* EnableFocus.shortcut */,
+				00CAF80E1AE60E0A23933EFB /* 关闭专注.shortcut */,
+				F78245296509CE4C78D23FEC /* 开始专注.shortcut */,
 				66402E5B54DE912F68A42009 /* README.md */,
 			);
 			path = Shortcuts;
@@ -239,9 +239,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */,
-				AD58FDF9E2F8B0B2A4419B26 /* DisableFocus.shortcut in Resources */,
-				DB413FE37AA3FAB697E139A0 /* EnableFocus.shortcut in Resources */,
 				C54224011217D4583ECCD9F6 /* README.md in Resources */,
+				14F2B2B0697DE280BE51ABF8 /* 关闭专注.shortcut in Resources */,
+				439942E9666219E0EFEE3CB3 /* 开始专注.shortcut in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

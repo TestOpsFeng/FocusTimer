@@ -96,7 +96,7 @@ struct MenuContent: View {
     private var shortcutSettings: some View {
         DisclosureGroup("Focus 快捷指令设置", isExpanded: $showShortcutSettings) {
             VStack(alignment: .leading, spacing: 8) {
-                Text("macOS 无公开 API 编程启用 Focus,需在 Shortcuts App 中创建两个快捷指令,然后在此填入名称。")
+                Text("macOS 无公开 API 编程启用 Focus,需在 Shortcuts App 中存在两个固定命名的快捷指令。")
                     .font(.caption2)
                     .foregroundStyle(.secondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -105,15 +105,17 @@ struct MenuContent: View {
                     Text("开启:")
                         .font(.caption)
                         .frame(width: 50, alignment: .leading)
-                    TextField("Shortcut 名", text: $model.enableShortcut)
-                        .textFieldStyle(.roundedBorder)
+                    Text(model.enableShortcut)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(.primary)
                 }
                 HStack {
                     Text("关闭:")
                         .font(.caption)
                         .frame(width: 50, alignment: .leading)
-                    TextField("Shortcut 名", text: $model.disableShortcut)
-                        .textFieldStyle(.roundedBorder)
+                    Text(model.disableShortcut)
+                        .font(.caption.monospaced())
+                        .foregroundStyle(.primary)
                 }
 
                 Button("打开 Shortcuts App") {

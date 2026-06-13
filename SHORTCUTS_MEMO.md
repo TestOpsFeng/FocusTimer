@@ -116,20 +116,16 @@ bplist00 ...      ← 二进制 plist(包含 SigningCertificateChain)
 实际验证(2026-06-13):当用户删除原 Shortcut 并通过「一键创建」导入新 `.shortcut` 文件时,**新 Shortcut 的名称 = 文件名**,而不是 `.shortcut` 文件内部原本保存的 Shortcut 名称。
 
 举例:
-- 资源文件:`Resources/Shortcuts/EnableFocus.shortcut`
+- 资源文件:`Resources/Shortcuts/开始专注.shortcut`
+- 导入后库中显示:**开始专注**
+- 资源文件:`Resources/Shortcuts/EnableFocus.shortcut`(如果误命名)
 - 导入后库中显示:**EnableFocus**
-- 资源文件:`Resources/Shortcuts/开启专注.shortcut`(如果误命名)
-- 导入后库中显示:**开启专注**
 
 所以:
 - App 默认配置(`LiveShortcutInstaller.defaultEnableName` / `defaultEnableShortcut`)必须与**文件名**一致
-- 当前默认值是 **`"EnableFocus"`** / **`"DisableFocus"`**(与资源文件名完全对应)
-- UI 中文标签("开启:" / "关闭:")与实际值可以不同 —— TextField 始终显示真实值
-
-**如果想用中文名(如"开启专注")**,需要:
-1. 在 Shortcuts App 中把 "EnableFocus" 重新命名为 "开启专注"
-2. 在 App 弹窗的"Focus 快捷指令设置"中把 `enableShortcut` 改为 "开启专注"
-3. (或:重新导出,把 `.shortcut` 文件名也改为 `开启专注.shortcut` + 同步修改代码默认值)
+- 当前默认值是 **`"开始专注"`** / **`"关闭专注"`**(与资源文件名完全对应)
+- **UI 不可编辑**(改回 TextField 也没有意义,因为代码里 `enableShortcut` / `disableShortcut` 已改为 `private(set)`)
+- 用户无需关心命名问题——点「一键创建」即得,删除后可重建
 
 ### ❌ Shortcut 内部名称与文件名不一致
 

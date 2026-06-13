@@ -28,8 +28,8 @@ enum ShortcutRole: String, Sendable {
     /// Bundle 中 .shortcut 文件的资源名(不含扩展名)
     var bundledResourceName: String {
         switch self {
-        case .enable:  return "EnableFocus"
-        case .disable: return "DisableFocus"
+        case .enable:  return "开始专注"
+        case .disable: return "关闭专注"
         }
     }
 }
@@ -91,8 +91,8 @@ struct LiveShortcutInstaller: ShortcutInstalling {
     // 注意:macOS 26 导出的签名 .shortcut 文件,导入时使用**文件名**作为 Shortcut 名称,
     // 而非 .shortcut 文件中原本保存的 Shortcut 名称。
     // 因此这里必须与 Resources/Shortcuts/ 目录下的文件名(bundledResourceName)保持一致。
-    static let defaultEnableName  = "EnableFocus"
-    static let defaultDisableName = "DisableFocus"
+    static let defaultEnableName  = "开始专注"
+    static let defaultDisableName = "关闭专注"
 
     func listInstalledNames() async throws -> [String] {
         let result = try await processRunner.run(

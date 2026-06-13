@@ -27,31 +27,25 @@ macOS 14+ 菜单栏倒计时应用,倒计时期间自动启用系统「专注模
 
 1. 点击菜单栏图标,展开「Focus 快捷指令设置」折叠区
 2. 点击「一键创建 Shortcut」按钮
-3. Shortcuts App 会依次弹出两个「Add 'EnableFocus'?」「Add 'DisableFocus'?」导入对话框
+3. Shortcuts App 会依次弹出两个「Add '开始专注'?」「Add '关闭专注'?」导入对话框
 4. 在每个对话框中点 **"Add Shortcut"**(每个 ~1 秒)
 5. 弹窗底部状态点变绿,显示「Shortcut 已就位 ✓」
 6. 之后任何时候删除了 Shortcut,重复上述流程即可恢复
 
-> **重要**:导入后库中的 Shortcut 名称是 **`EnableFocus`** 和 **`DisableFocus`**(与资源文件名一致,不是中文)。
-> 弹窗中的中文标签("开启" / "关闭")与实际值可以不同 —— TextField 始终显示真实名称。
-> 若想用中文名,在 Shortcuts App 里重命名后,在 App 弹窗里同步修改 `enableShortcut` / `disableShortcut` 即可。
-
-App 内部已携带两个预制的 `.shortcut` 文件,终身跟随 Bundle。
+> App 内部已携带两个预制的 `.shortcut` 文件,终身跟随 Bundle。导入后的 Shortcut 名称是 **「开始专注」/「关闭专注」**,与 App 内置配置一致,UI **不可编辑**(采用固定名称以保证一键创建流程始终可用)。
 
 ### 方案 B(手动,可选,适合高级用户)
 
-在 **Shortcuts** App 中创建两个 Shortcut,分别命名 **"EnableFocus"** 和 **"DisableFocus"**(或与 App 配置匹配的其他名称,可在弹窗中修改):
+在 **Shortcuts** App 中创建两个 Shortcut,必须分别命名为 **"开始专注"** 和 **"关闭专注"**(与 App 内置配置严格一致,不可自定义):
 
-#### EnableFocus(开启)
+#### 开始专注
 1. 打开 Shortcuts App → 顶部 **+** 新建
 2. 添加动作 **"设置专注模式"** → 选择「启用」,选择你希望使用的专注模式(如「勿扰模式」或自定义的工作模式)
-3. 保存为 **"EnableFocus"**
+3. 保存为 **"开始专注"**(必须用此名,App 不可编辑配置)
 
-#### DisableFocus(关闭)
+#### 关闭专注
 1. 同样新建,添加 **"设置专注模式"** → 选择「关闭」
-2. 保存为 **"DisableFocus"**
-
-> 如果 Shortcut 用其他命名(如 `开启专注` / `关闭专注`),在 App 弹窗的"Focus 快捷指令设置"区域把 `enableShortcut` / `disableShortcut` 改成对应名称即可。
+2. 保存为 **"关闭专注"**(必须用此名,App 不可编辑配置)
 
 ## 构建
 

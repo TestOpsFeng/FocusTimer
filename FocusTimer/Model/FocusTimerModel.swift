@@ -38,15 +38,11 @@ final class FocusTimerModel {
     /// Shortcut 安装状态(由 refreshInstallationStatus / installShortcuts 维护)
     private(set) var installationStatus: ShortcutInstallationStatus = .bothMissing
 
-    /// 用户配置的开启 Focus 的 Shortcut 名称
-    var enableShortcut: String {
-        didSet { defaults.set(enableShortcut, forKey: DefaultsKey.enableShortcut) }
-    }
+    /// 固定开启 Focus 的 Shortcut 名称(不可编辑,与 Resources/Shortcuts/开始专注.shortcut 对应)
+    private(set) var enableShortcut: String
 
-    /// 用户配置的关闭 Focus 的 Shortcut 名称
-    var disableShortcut: String {
-        didSet { defaults.set(disableShortcut, forKey: DefaultsKey.disableShortcut) }
-    }
+    /// 固定关闭 Focus 的 Shortcut 名称(不可编辑,与 Resources/Shortcuts/关闭专注.shortcut 对应)
+    private(set) var disableShortcut: String
 
     // MARK: - 依赖
 
@@ -77,8 +73,8 @@ final class FocusTimerModel {
     }
 
     static let defaultDuration: TimeInterval = 60 * 60
-    static let defaultEnableShortcut = "EnableFocus"
-    static let defaultDisableShortcut = "DisableFocus"
+    static let defaultEnableShortcut = "开始专注"
+    static let defaultDisableShortcut = "关闭专注"
 
     // MARK: - 初始化
 
@@ -98,18 +94,19 @@ final class FocusTimerModel {
         let stored = defaults.double(forKey: DefaultsKey.totalDuration)
         let initialDuration: TimeInterval = stored > 0 ? stored : Self.defaultDuration
 
-        let enableName = defaults.string(forKey: DefaultsKey.enableShortcut) ?? Self.defaultEnableShortcut
-        let disableName = defaults.string(forKey: DefaultsKey.disableShortcut) ?? Self.defaultDisableShortcut
+        // 清除旧版的可编辑 Shortcut 名称(从 UserDefaults),统一用新的固定名称
+        defaults.removeObject(forKey: DefaultsKey.enableShortcut)
+        defaults.removeObject(forKey: DefaultsKey.disableShortcut)
 
-        self.enableShortcut = enableName
-        self.disableShortcut = disableName
+        self.enableShortcut = Self.defaultEnableShortcut
+        self.disableShortcut = Self.defaultDisableShortcut
 
         self.state = TimerState(
             phase: .idle,
             totalDuration: initialDuration
         )
 
-        log.info("FocusTimerModel 初始化完成,totalDuration=\(initialDuration)s,enable=\(enableName, privacy: .public),disable=\(disableName, privacy: .public)")
+        log.info("FocusTimerModel 初始化完成,totalDuration=\(initialDuration)s,enable=\(Self.defaultEnableShortcut, privacy: .public),disable=\(Self.defaultDisableShortcut, privacy: .public)")
     }
 
     // MARK: - 公开 API
