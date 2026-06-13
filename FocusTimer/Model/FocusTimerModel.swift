@@ -35,6 +35,9 @@ final class FocusTimerModel {
     /// UI 徽章读此值,避免依赖 `INFocusStatusCenter` 授权。
     private(set) var appFocusOn: Bool = false
 
+    /// Shortcut 安装状态(由 refreshInstallationStatus / installShortcuts 维护)
+    private(set) var installationStatus: ShortcutInstallationStatus = .bothMissing
+
     /// 用户配置的开启 Focus 的 Shortcut 名称
     var enableShortcut: String {
         didSet { defaults.set(enableShortcut, forKey: DefaultsKey.enableShortcut) }
@@ -50,6 +53,7 @@ final class FocusTimerModel {
     private let timer: TimerEngine
     private let focus: FocusModeControlling
     private let notifications: NotificationManaging
+    private let installer: ShortcutInstalling
     private let defaults: UserDefaults
 
     // MARK: - 内部状态
@@ -82,11 +86,13 @@ final class FocusTimerModel {
         timer: TimerEngine = TimerEngine(),
         focus: FocusModeControlling = FocusModeController.live(),
         notifications: NotificationManaging = NotificationManager.live(),
+        installer: ShortcutInstalling = LiveShortcutInstaller(),
         defaults: UserDefaults = .standard
     ) {
         self.timer = timer
         self.focus = focus
         self.notifications = notifications
+        self.installer = installer
         self.defaults = defaults
 
         let stored = defaults.double(forKey: DefaultsKey.totalDuration)
@@ -226,6 +232,44 @@ final class FocusTimerModel {
     /// [已废弃] 徽章改读 appFocusOn,本方法保留以备未来需要
     func refreshFocusStatus() async {
         log.debug("refreshFocusStatus() 已废弃,无操作")
+    }
+
+    /// 检查当前 Shortcut 安装状态(异步,失败时保持上次状态)
+    func refreshInstallationStatus() async {
+        do {
+            installationStatus = try await installer.installationStatus(
+                enableName: enableShortcut,
+                disableName: disableShortcut
+            )
+            log.info("Shortcut 安装状态: \(String(describing: self.installationStatus), privacy: .public)")
+        } catch {
+            log.error("检查 Shortcut 安装状态失败: \(error.localizedDescription, privacy: .public)")
+            // 失败时保持上一次的 status,不弹通知(静默)
+        }
+    }
+
+    /// 用户点击「一键创建 Shortcut」时调用
+    /// - 流程:打开 Bundle 中两个 .shortcut 文件 → Shortcuts App 弹导入对话框 → 用户点 Add
+    /// - 等 ~2.5s 后重新查询状态
+    /// - 失败时通过系统通知告知用户
+    @discardableResult
+    func installShortcuts() async -> ShortcutInstallationStatus {
+        log.info(">>> 用户点击「一键创建 Shortcut」")
+        do {
+            let newStatus = try await installer.importBoth(bundle: .main)
+            installationStatus = newStatus
+            if newStatus.isReady {
+                log.info("一键创建完成,两个 Shortcut 均已就位")
+            } else {
+                log.warning("一键创建未完成,可能用户取消了导入对话框: \(String(describing: newStatus), privacy: .public)")
+            }
+            return newStatus
+        } catch {
+            let message = (error as NSError).localizedDescription
+            log.error("一键创建失败: \(message, privacy: .public)")
+            await notifications.sendNow(title: "一键创建 Shortcut 失败", body: message)
+            return installationStatus
+        }
     }
 
     // MARK: - 内部

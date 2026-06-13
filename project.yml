@@ -28,6 +28,8 @@ targets:
           - "**/.DS_Store"
     resources:
       - path: FocusTimer/Resources/Assets.xcassets
+      - path: FocusTimer/Resources/Shortcuts
+        optional: true
     info:
       path: FocusTimer/Resources/Info.plist
       properties:
@@ -57,3 +59,18 @@ targets:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
         ENABLE_PREVIEWS: YES
+
+  FocusTimerTests:
+    type: bundle.unit-test
+    platform: macOS
+    deploymentTarget: "14.0"
+    sources:
+      - path: FocusTimerTests
+    dependencies:
+      - target: FocusTimer
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.example.FocusTimerTests
+        GENERATE_INFOPLIST_FILE: YES
+        BUNDLE_LOADER: $(TEST_HOST)
+        TEST_HOST: $(BUILT_PRODUCTS_DIR)/FocusTimer.app/Contents/MacOS/FocusTimer

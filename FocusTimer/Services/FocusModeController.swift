@@ -46,11 +46,20 @@ protocol FocusModeControlling {
 
 enum FocusModeController {
 
-    static func live() -> FocusModeControlling { LiveFocusController() }
+    static func live(
+        processRunner: ProcessRunning = LiveProcessRunner()
+    ) -> FocusModeControlling {
+        LiveFocusController(processRunner: processRunner)
+    }
 
     private final class LiveFocusController: FocusModeControlling {
 
+        private let processRunner: ProcessRunning
         private var center: INFocusStatusCenter { .default }
+
+        init(processRunner: ProcessRunning) {
+            self.processRunner = processRunner
+        }
 
         func authorizationStatus() async -> INFocusStatusAuthorizationStatus {
             // authorizationStatus 是只读属性,同步返回
@@ -97,7 +106,10 @@ enum FocusModeController {
             }
 
             log.info("通过 CLI 触发 Shortcut: \(trimmed, privacy: .public)")
-            let result = await executeShortcutViaCLI(named: trimmed)
+            let result = try await processRunner.run(
+                executable: "/usr/bin/shortcuts",
+                arguments: ["run", trimmed]
+            )
             if !result.success {
                 log.error("CLI 触发失败 (exit=\(result.exitCode)): \(result.stderr, privacy: .public)")
                 let body = """
@@ -114,74 +126,4 @@ enum FocusModeController {
             }
         }
     }
-}
-
-// MARK: - CLI 封装(file-scope)
-
-private struct ShortcutRunResult {
-    let success: Bool
-    let exitCode: Int32
-    let stdout: String
-    let stderr: String
-}
-
-private enum ShortcutCLI {
-    /// /usr/bin/shortcuts 在 macOS 12+ 自带;缓存路径避免重复检查。
-    static let binaryPath: String = {
-        let candidate = "/usr/bin/shortcuts"
-        if FileManager.default.isExecutableFile(atPath: candidate) {
-            return candidate
-        }
-        return "/usr/bin/env"   // 极端回退(基本不会发生)
-    }()
-
-    /// `arguments` 数组 — 直接走二进制时是 ["run", name],走 env 回退时是 ["shortcuts", "run", name]
-    static func arguments(for name: String) -> [String] {
-        if binaryPath == "/usr/bin/shortcuts" {
-            return ["run", name]
-        } else {
-            return ["shortcuts", "run", name]
-        }
-    }
-}
-
-private func runShortcutProcess(name: String) -> ShortcutRunResult {
-    let process = Process()
-    process.executableURL = URL(fileURLWithPath: ShortcutCLI.binaryPath)
-    process.arguments = ShortcutCLI.arguments(for: name)
-
-    let stdoutPipe = Pipe()
-    let stderrPipe = Pipe()
-    process.standardOutput = stdoutPipe
-    process.standardError = stderrPipe
-
-    do {
-        try process.run()
-    } catch {
-        return ShortcutRunResult(
-            success: false,
-            exitCode: -1,
-            stdout: "",
-            stderr: "无法启动 /usr/bin/shortcuts: \(error.localizedDescription)"
-        )
-    }
-
-    // readToEnd 是阻塞 IO;在 Task.detached 中调用
-    let outData = (try? stdoutPipe.fileHandleForReading.readToEnd()) ?? Data()
-    let errData = (try? stderrPipe.fileHandleForReading.readToEnd()) ?? Data()
-    process.waitUntilExit()
-
-    return ShortcutRunResult(
-        success: process.terminationStatus == 0,
-        exitCode: process.terminationStatus,
-        stdout: String(data: outData, encoding: .utf8) ?? "",
-        stderr: String(data: errData, encoding: .utf8) ?? ""
-    )
-}
-
-/// 在后台线程同步执行 /usr/bin/shortcuts run <name>,包装为 async。
-private func executeShortcutViaCLI(named name: String) async -> ShortcutRunResult {
-    await Task.detached(priority: .userInitiated) {
-        runShortcutProcess(name: name)
-    }.value
 }

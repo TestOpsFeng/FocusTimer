@@ -21,14 +21,29 @@ macOS 14+ 菜单栏倒计时应用,倒计时期间自动启用系统「专注模
 
 ## 前置设置(只需一次)
 
+### 方案 A(推荐,一键)
+
+无需手动操作。第一次运行 FocusTimer 后:
+
+1. 点击菜单栏图标,展开「Focus 快捷指令设置」折叠区
+2. 点击「一键创建 Shortcut」按钮
+3. Shortcuts App 会依次弹出两个「Add '开启专注'?」「Add '关闭专注'?」导入对话框
+4. 在每个对话框中点 **"Add Shortcut"**(每个 ~1 秒)
+5. 弹窗底部状态点变绿,显示「Shortcut 已就位 ✓」
+6. 之后任何时候删除了 Shortcut,重复上述流程即可恢复
+
+App 内部已携带两个预制的 `.shortcut` 文件,终身跟随 Bundle。
+
+### 方案 B(手动,可选,适合高级用户)
+
 在 **Shortcuts** App 中创建两个 Shortcut,分别命名 **"开启专注"** 和 **"关闭专注"**(名字可在弹窗中修改):
 
-### 开启专注
+#### 开启专注
 1. 打开 Shortcuts App → 顶部 **+** 新建
 2. 添加动作 **"设置专注模式"** → 选择「启用」,选择你希望使用的专注模式(如「勿扰模式」或自定义的工作模式)
 3. 保存为 **"开启专注"**
 
-### 关闭专注
+#### 关闭专注
 1. 同样新建,添加 **"设置专注模式"** → 选择「关闭」
 2. 保存为 **"关闭专注"**
 
@@ -78,6 +93,8 @@ FocusTimer/
 │   ├── Services/
 │   │   ├── TimerEngine.swift          # Task.sleep 驱动的 1Hz 滴答
 │   │   ├── FocusModeController.swift  # INFocusStatusCenter 读 + /usr/bin/shortcuts CLI 写
+│   │   ├── ShortcutInstaller.swift    # 检测/触发 Shortcuts App 导入(配合 .shortcut 资源)
+│   │   ├── ProcessRunner.swift        # 子进程调用抽象(可注入测试桩)
 │   │   └── NotificationManager.swift  # UNUserNotificationCenter 封装(含失败通知)
 │   ├── Views/
 │   │   ├── MenuBarLabel.swift   # 菜单栏文字
@@ -104,16 +121,19 @@ log show --predicate 'subsystem == "com.example.FocusTimer"' --info --debug --la
 - `FocusTimerModel`:状态转换(start/pause/resume/reset/complete)
 - `TimerEngine`:滴答启动/停止
 - `FocusModeController`:Focus 授权 + Shortcut 触发
+- `ShortcutInstaller`:Shortcut 安装状态查询 + 导入对话框触发
+- `ProcessRunner`:子进程启动/退出/stdout/stderr 摘要
 - `NotificationManager`:通知权限 + 调度
 - `App`:启动
 
 ## 已知限制
 
-1. **Shortcut 触发失败时通过系统通知提示**:本应用通过 `/usr/bin/shortcuts` CLI 调用用户在 Shortcuts App 中预配置的「开启专注」/「关闭专注」。若 Shortcut 不存在、改名或未含「设置专注模式」动作,CLI 退出非 0,本应用会**通过系统通知弹窗**告知用户,并把 stderr 详情记录到 `os.Logger`(category=`FocusModeController`)。查看方式:`log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m`。
-2. **强制退出 App 时 Focus 不会自动恢复**:v1 范围不处理 `NSApplicationWillTerminate` 钩子,异常退出后 Focus 可能保持开启。
-3. **未配置任何 Focus 模式时 Shortcut 内的"设置专注模式"动作会失败** — 在 Shortcuts App 的运行日志里可以看到。
-4. **`@Observable` + 每秒 tick**:`MenuBarLabel` 每秒重绘,但 `DateComponentsFormatter` 复用,无性能问题。
-5. **App Sandbox 默认关闭**:本地 dev 阶段不开启。分发时需要重新评估 Focus API 在沙箱下的行为。
+1. **一键创建依赖 Bundle 内的 `.shortcut` 资源**:App 携带两个预制的 `.shortcut` 文件(`Resources/Shortcuts/EnableFocus.shortcut` + `DisableFocus.shortcut`)。如果文件丢失或损坏,「一键创建」按钮会弹「Bundle 缺少 EnableFocus.shortcut」错误。开发者(本仓库维护者)需手动从 Shortcuts App 重新导出并放回该目录。
+2. **Shortcut 触发失败时通过系统通知提示**:本应用通过 `/usr/bin/shortcuts` CLI 调用用户在 Shortcuts App 中预配置的「开启专注」/「关闭专注」。若 Shortcut 不存在、改名或未含「设置专注模式」动作,CLI 退出非 0,本应用会**通过系统通知弹窗**告知用户,并把 stderr 详情记录到 `os.Logger`(category=`FocusModeController`)。查看方式:`log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m`。
+3. **强制退出 App 时 Focus 不会自动恢复**:v1 范围不处理 `NSApplicationWillTerminate` 钩子,异常退出后 Focus 可能保持开启。
+4. **未配置任何 Focus 模式时 Shortcut 内的"设置专注模式"动作会失败** — 在 Shortcuts App 的运行日志里可以看到。
+5. **`@Observable` + 每秒 tick**:`MenuBarLabel` 每秒重绘,但 `DateComponentsFormatter` 复用,无性能问题。
+6. **App Sandbox 默认关闭**:本地 dev 阶段不开启。分发时需要重新评估 Focus API 在沙箱下的行为。
 
 ## 状态机
 

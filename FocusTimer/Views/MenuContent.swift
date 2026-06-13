@@ -28,6 +28,10 @@ struct MenuContent: View {
         }
         .padding(16)
         .frame(width: 320)
+        .task {
+            // 弹窗首次出现时检查一次 Shortcut 安装状态
+            await model.refreshInstallationStatus()
+        }
     }
 
     // MARK: - 头部
@@ -117,10 +121,57 @@ struct MenuContent: View {
                 }
                 .font(.caption)
                 .buttonStyle(.borderless)
+
+                Divider()
+                    .padding(.vertical, 4)
+
+                Button {
+                    Task { await model.installShortcuts() }
+                } label: {
+                    Label("一键创建 Shortcut", systemImage: "wand.and.stars")
+                        .frame(maxWidth: .infinity)
+                }
+                .buttonStyle(.bordered)
+                .controlSize(.small)
+
+                installationStatusRow
             }
             .padding(.top, 6)
         }
         .font(.caption)
+    }
+
+    private var installationStatusRow: some View {
+        HStack(spacing: 6) {
+            Circle()
+                .fill(installationStatusColor)
+                .frame(width: 6, height: 6)
+            Text(installationStatusText)
+                .font(.caption2)
+                .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
+        }
+    }
+
+    private var installationStatusColor: Color {
+        switch model.installationStatus {
+        case .bothPresent:                       return .green
+        case .enableMissing, .disableMissing:    return .orange
+        case .bothMissing:                       return .red
+        }
+    }
+
+    private var installationStatusText: String {
+        switch model.installationStatus {
+        case .bothPresent:
+            return "Shortcut 已就位 ✓"
+        case .enableMissing:
+            return "未找到「开启」Shortcut,点上方按钮一键创建"
+        case .disableMissing:
+            return "未找到「关闭」Shortcut,点上方按钮一键创建"
+        case .bothMissing:
+            return "未找到任何 Shortcut,点上方按钮一键创建"
+        }
     }
 
     @State private var showShortcutSettings = false

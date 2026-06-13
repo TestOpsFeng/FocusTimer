@@ -8,11 +8,18 @@
 
 /* Begin PBXBuildFile section */
 		22EEA605DA109D383423C9F8 /* FocusTimerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */; };
+		24C22C212D453B5A37E77759 /* ProcessRunner.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0B685555669D3866AA935507 /* ProcessRunner.swift */; };
 		2839B04FDD044307A7A29F91 /* FocusModeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */; };
+		3D2EE73A994161B2085A83D0 /* ShortcutInstallerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 578CA45EACC928540874BAC5 /* ShortcutInstallerTests.swift */; };
 		639BB24FC62E98327CE2491D /* TimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5767478094226883F9531A /* TimerState.swift */; };
 		74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13D1C7F95D15E2ED4489A67E /* Assets.xcassets */; };
 		78F07D0DBEA13FA9A18BB163 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D105EC58FF850157F9F01A /* MenuBarLabel.swift */; };
+		AD58FDF9E2F8B0B2A4419B26 /* DisableFocus.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = F26678C7BB7454D977D41C1E /* DisableFocus.shortcut */; };
+		B2ACCF9255F9F740509AC888 /* ShortcutInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */; };
 		B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037EDD114FE0F742109FAB3 /* NotificationManager.swift */; };
+		C54224011217D4583ECCD9F6 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 66402E5B54DE912F68A42009 /* README.md */; };
+		DB413FE37AA3FAB697E139A0 /* EnableFocus.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = 42A1293C05B2943841285CB9 /* EnableFocus.shortcut */; };
+		E0897013748094A760A1FF96 /* ProcessRunnerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 245C747689FCB3524EBD63FA /* ProcessRunnerTests.swift */; };
 		E38B5089E15ECABED840250F /* MenuContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */; };
 		E4A6158C59082BEA5162AC79 /* FocusPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 07F2824A2999E00238CD7405 /* FocusPhase.swift */; };
 		E800D879B5258C9A49BE2FF2 /* DurationPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */; };
@@ -20,24 +27,51 @@
 		FD0FD92FB1ABD43B0147D95C /* FocusTimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 116F8DBB34E6FF3399F5DFD1 /* FocusTimerModel.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		0C6C93D9E6CA107B38CF21DD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 12D45FD891DBCCA2475D15BF /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 23841C0983EFA5B7F2B8D20B;
+			remoteInfo = FocusTimer;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
 		07F2824A2999E00238CD7405 /* FocusPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPhase.swift; sourceTree = "<group>"; };
+		0B685555669D3866AA935507 /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		116F8DBB34E6FF3399F5DFD1 /* FocusTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerModel.swift; sourceTree = "<group>"; };
 		13D1C7F95D15E2ED4489A67E /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		245C747689FCB3524EBD63FA /* ProcessRunnerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunnerTests.swift; sourceTree = "<group>"; };
 		393E8896CC7B5C463F5EC88D /* FocusTimerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerApp.swift; sourceTree = "<group>"; };
+		42A1293C05B2943841285CB9 /* EnableFocus.shortcut */ = {isa = PBXFileReference; path = EnableFocus.shortcut; sourceTree = "<group>"; };
 		460A455D4EB6652487D93A00 /* TimerEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerEngine.swift; sourceTree = "<group>"; };
+		578CA45EACC928540874BAC5 /* ShortcutInstallerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutInstallerTests.swift; sourceTree = "<group>"; };
+		5FED0A20EC2C7F358FE2A17C /* FocusTimerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FocusTimerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		66402E5B54DE912F68A42009 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		69D105EC58FF850157F9F01A /* MenuBarLabel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuBarLabel.swift; sourceTree = "<group>"; };
 		73E4000C3A062EDEADEDCF13 /* FocusTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FocusTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		820B83D734F7FAABDA06CD2E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutInstaller.swift; sourceTree = "<group>"; };
 		B037EDD114FE0F742109FAB3 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
 		C9456AFF38E6818AA650D60C /* FocusTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusTimer.entitlements; sourceTree = "<group>"; };
 		D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
 		E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusModeController.swift; sourceTree = "<group>"; };
 		EC8D4E7B75EFE0CA44883CD3 /* MenuContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuContent.swift; sourceTree = "<group>"; };
+		F26678C7BB7454D977D41C1E /* DisableFocus.shortcut */ = {isa = PBXFileReference; path = DisableFocus.shortcut; sourceTree = "<group>"; };
 		FB5767478094226883F9531A /* TimerState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimerState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXGroup section */
+		5EEA3C7EB162AD4C84087984 /* FocusTimerTests */ = {
+			isa = PBXGroup;
+			children = (
+				245C747689FCB3524EBD63FA /* ProcessRunnerTests.swift */,
+				578CA45EACC928540874BAC5 /* ShortcutInstallerTests.swift */,
+			);
+			path = FocusTimerTests;
+			sourceTree = "<group>";
+		};
 		639571966BFCF055293A50F4 /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -64,8 +98,19 @@
 				13D1C7F95D15E2ED4489A67E /* Assets.xcassets */,
 				C9456AFF38E6818AA650D60C /* FocusTimer.entitlements */,
 				820B83D734F7FAABDA06CD2E /* Info.plist */,
+				AE6DAB0A56476580C1F2425F /* Shortcuts */,
 			);
 			path = Resources;
+			sourceTree = "<group>";
+		};
+		AE6DAB0A56476580C1F2425F /* Shortcuts */ = {
+			isa = PBXGroup;
+			children = (
+				F26678C7BB7454D977D41C1E /* DisableFocus.shortcut */,
+				42A1293C05B2943841285CB9 /* EnableFocus.shortcut */,
+				66402E5B54DE912F68A42009 /* README.md */,
+			);
+			path = Shortcuts;
 			sourceTree = "<group>";
 		};
 		B298BBB03474A3B8DB661500 /* FocusTimer */ = {
@@ -85,6 +130,8 @@
 			children = (
 				E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */,
 				B037EDD114FE0F742109FAB3 /* NotificationManager.swift */,
+				0B685555669D3866AA935507 /* ProcessRunner.swift */,
+				A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */,
 				460A455D4EB6652487D93A00 /* TimerEngine.swift */,
 			);
 			path = Services;
@@ -94,6 +141,7 @@
 			isa = PBXGroup;
 			children = (
 				73E4000C3A062EDEADEDCF13 /* FocusTimer.app */,
+				5FED0A20EC2C7F358FE2A17C /* FocusTimerTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -102,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				B298BBB03474A3B8DB661500 /* FocusTimer */,
+				5EEA3C7EB162AD4C84087984 /* FocusTimerTests */,
 				E884C76B3FF3F338D0715D6E /* Products */,
 			);
 			sourceTree = "<group>";
@@ -127,6 +176,24 @@
 			productReference = 73E4000C3A062EDEADEDCF13 /* FocusTimer.app */;
 			productType = "com.apple.product-type.application";
 		};
+		7013012E44AA8A49A2FBB6F8 /* FocusTimerTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9E9CF62129EA09674D571AD5 /* Build configuration list for PBXNativeTarget "FocusTimerTests" */;
+			buildPhases = (
+				C0FC07AA3EB24706F79D6D4B /* Sources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				81EBDCC4D7ED62A0447F30AD /* PBXTargetDependency */,
+			);
+			name = FocusTimerTests;
+			packageProductDependencies = (
+			);
+			productName = FocusTimerTests;
+			productReference = 5FED0A20EC2C7F358FE2A17C /* FocusTimerTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -137,6 +204,10 @@
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					23841C0983EFA5B7F2B8D20B = {
+						DevelopmentTeam = "";
+						ProvisioningStyle = Automatic;
+					};
+					7013012E44AA8A49A2FBB6F8 = {
 						DevelopmentTeam = "";
 						ProvisioningStyle = Automatic;
 					};
@@ -157,6 +228,7 @@
 			projectRoot = "";
 			targets = (
 				23841C0983EFA5B7F2B8D20B /* FocusTimer */,
+				7013012E44AA8A49A2FBB6F8 /* FocusTimerTests */,
 			);
 		};
 /* End PBXProject section */
@@ -167,6 +239,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */,
+				AD58FDF9E2F8B0B2A4419B26 /* DisableFocus.shortcut in Resources */,
+				DB413FE37AA3FAB697E139A0 /* EnableFocus.shortcut in Resources */,
+				C54224011217D4583ECCD9F6 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -185,14 +260,69 @@
 				78F07D0DBEA13FA9A18BB163 /* MenuBarLabel.swift in Sources */,
 				E38B5089E15ECABED840250F /* MenuContent.swift in Sources */,
 				B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */,
+				24C22C212D453B5A37E77759 /* ProcessRunner.swift in Sources */,
+				B2ACCF9255F9F740509AC888 /* ShortcutInstaller.swift in Sources */,
 				F6FE2A3BEA13B2C4B64B4934 /* TimerEngine.swift in Sources */,
 				639BB24FC62E98327CE2491D /* TimerState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		C0FC07AA3EB24706F79D6D4B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E0897013748094A760A1FF96 /* ProcessRunnerTests.swift in Sources */,
+				3D2EE73A994161B2085A83D0 /* ShortcutInstallerTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		81EBDCC4D7ED62A0447F30AD /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 23841C0983EFA5B7F2B8D20B /* FocusTimer */;
+			targetProxy = 0C6C93D9E6CA107B38CF21DD /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin XCBuildConfiguration section */
+		098C49C5E67378D969E71CBD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.FocusTimerTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusTimer.app/Contents/MacOS/FocusTimer";
+			};
+			name = Release;
+		};
+		63EF5AD1ECBA52EE1F1DA420 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				COMBINE_HIDPI_IMAGES = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@loader_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 14.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.FocusTimerTests;
+				SDKROOT = macosx;
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FocusTimer.app/Contents/MacOS/FocusTimer";
+			};
+			name = Debug;
+		};
 		6F44B062B9F09611EAA43BBC /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -383,6 +513,15 @@
 			buildConfigurations = (
 				6F44B062B9F09611EAA43BBC /* Debug */,
 				9ECA60351CBFF5271AF6C1F5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		9E9CF62129EA09674D571AD5 /* Build configuration list for PBXNativeTarget "FocusTimerTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				63EF5AD1ECBA52EE1F1DA420 /* Debug */,
+				098C49C5E67378D969E71CBD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

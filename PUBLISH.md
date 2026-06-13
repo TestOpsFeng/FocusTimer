@@ -173,16 +173,24 @@ xcodegen generate
 
 App 通过 `/usr/bin/shortcuts` CLI(而非 `shortcuts://` URL scheme)触发 Shortcuts App 中预配置的快捷指令。该路径**不要求** Shortcuts App GUI 先运行——首次启动后即可直接切换专注,无需先手动打开 Shortcuts App。
 
+**首选恢复方式(无需手动)**:在弹窗「Focus 快捷指令设置」中点「一键创建 Shortcut」,Shortcuts App 依次弹出两个「Add '开启专注'?」「Add '关闭专注'?」对话框,点 Add Shortcut 即可。App 内部已携带预制的 `.shortcut` 文件,任何时候删除 Shortcut 都能一键重建。
+
 若 Focus 仍然没切换,可能原因及排查:
 
-1. **Shortcut 不存在 / 改名 / 拼写不一致**:本应用会**通过系统通知弹窗**告知失败原因,详情写入 `os.Logger`:
+1. **一键创建后状态仍异常**:查看 Bundle 是否真带资源:
+   ```bash
+   ls -la /Applications/FocusTimer.app/Contents/Resources/EnableFocus.shortcut
+   ls -la /Applications/FocusTimer.app/Contents/Resources/DisableFocus.shortcut
+   ```
+   若缺失,需从本仓库 `FocusTimer/Resources/Shortcuts/README.md` 的流程重新生成。
+2. **Shortcut 不存在 / 改名 / 拼写不一致**:本应用会**通过系统通知弹窗**告知失败原因,详情写入 `os.Logger`:
    ```bash
    /usr/bin/log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m
    ```
    在弹窗的"Focus 快捷指令设置"区域检查名称是否与 Shortcuts App 中一致。
-2. **手动验证 Shortcut 本身**:在 Terminal 中执行 `shortcuts run "开启专注"`,若报错说明 Shortcut 本身有问题(如「设置专注模式」动作被删除、Shortcut 私有、所在 iCloud 账户未登录等)。
-3. **首次运行的 Shortcuts 自动化权限**:首次执行时 macOS 会弹"FocusTimer wants to run shortcut…"的自动化授权,**必须点"允许"**。误点"拒绝"需到「系统设置 → 隐私与安全性 → 自动化」中重新允许。
-4. **未配置任何系统 Focus 模式**:在「系统设置 → 专注」中至少需要存在一个 Focus(勿扰/工作/个人等),否则「设置专注模式」动作无可用目标。
+3. **手动验证 Shortcut 本身**:在 Terminal 中执行 `shortcuts run "开启专注"`,若报错说明 Shortcut 本身有问题(如「设置专注模式」动作被删除、Shortcut 私有、所在 iCloud 账户未登录等)。
+4. **首次运行的 Shortcuts 自动化权限**:首次执行时 macOS 会弹"FocusTimer wants to run shortcut…"的自动化授权,**必须点"允许"**。误点"拒绝"需到「系统设置 → 隐私与安全性 → 自动化」中重新允许。
+5. **未配置任何系统 Focus 模式**:在「系统设置 → 专注」中至少需要存在一个 Focus(勿扰/工作/个人等),否则「设置专注模式」动作无可用目标。
 
 ---
 
@@ -246,6 +254,8 @@ rm -f ~/Library/Preferences/com.example.FocusTimer.plist
 | `FocusTimerModel` | 状态机转换(start/pause/resume/reset/complete) + appFocusOn 变化 |
 | `TimerEngine` | 滴答启动/停止 |
 | `FocusModeController` | Focus 授权 + 触发 Shortcut(走 `/usr/bin/shortcuts` CLI) |
+| `ShortcutInstaller` | 检测 Shortcut 安装状态 + 触发导入对话框 |
+| `ProcessRunner` | 子进程启动/退出/stdout/stderr 摘要 |
 | `NotificationManager` | 通知权限 + 调度/取消 + 失败时即时弹窗 |
 
 按类别过滤:
