@@ -111,16 +111,27 @@ bplist00 ...      ← 二进制 plist(包含 SigningCertificateChain)
 
 `plistlib.loads(data[12:])` 在签名格式上会抛 `InvalidFileException`,因为 `bplist00` 头部有非标准的偏移量字段(8 字节头,而非标准的 0 字节)。**不需要在代码中解析 .shortcut 文件**——`NSWorkspace.open(url)` 直接交给 Shortcuts App 处理。
 
+### ⚠️ 关键陷阱:macOS 26 导入时使用**文件名**作为 Shortcut 名称
+
+实际验证(2026-06-13):当用户删除原 Shortcut 并通过「一键创建」导入新 `.shortcut` 文件时,**新 Shortcut 的名称 = 文件名**,而不是 `.shortcut` 文件内部原本保存的 Shortcut 名称。
+
+举例:
+- 资源文件:`Resources/Shortcuts/EnableFocus.shortcut`
+- 导入后库中显示:**EnableFocus**
+- 资源文件:`Resources/Shortcuts/开启专注.shortcut`(如果误命名)
+- 导入后库中显示:**开启专注**
+
+所以:
+- App 默认配置(`LiveShortcutInstaller.defaultEnableName` / `defaultEnableShortcut`)必须与**文件名**一致
+- 当前默认值是 **`"EnableFocus"`** / **`"DisableFocus"`**(与资源文件名完全对应)
+- UI 中文标签("开启:" / "关闭:")与实际值可以不同 —— TextField 始终显示真实值
+
+**如果想用中文名(如"开启专注")**,需要:
+1. 在 Shortcuts App 中把 "EnableFocus" 重新命名为 "开启专注"
+2. 在 App 弹窗的"Focus 快捷指令设置"中把 `enableShortcut` 改为 "开启专注"
+3. (或:重新导出,把 `.shortcut` 文件名也改为 `开启专注.shortcut` + 同步修改代码默认值)
+
 ### ❌ Shortcut 内部名称与文件名不一致
-
-- 文件名:`EnableFocus.shortcut` / `DisableFocus.shortcut`(项目约定)
-- Shortcut **内部**名称(用户看到的):**开启专注** / **关闭专注**(与 App 中 `LiveShortcutInstaller.defaultEnableName` / `defaultDisableName` 一致)
-
-如果改了内部名称,需要**同步**修改:
-- `FocusTimer/Services/ShortcutInstaller.swift` 中的 `defaultEnableName` / `defaultDisableName`
-- `FocusTimer/Model/FocusTimerModel.swift` 中的 `defaultEnableShortcut` / `defaultDisableShortcut`
-
-否则「一键创建」后 `shortcuts list` 找不到新导入的 Shortcut,状态会一直显示「未就位」。
 
 ---
 

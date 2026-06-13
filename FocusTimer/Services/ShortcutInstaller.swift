@@ -88,8 +88,11 @@ struct LiveShortcutInstaller: ShortcutInstalling {
     }
 
     // 默认 Shortcut 名称(与 .shortcut 文件内部的 Shortcut 名称必须一致)
-    static let defaultEnableName  = "开启专注"
-    static let defaultDisableName = "关闭专注"
+    // 注意:macOS 26 导出的签名 .shortcut 文件,导入时使用**文件名**作为 Shortcut 名称,
+    // 而非 .shortcut 文件中原本保存的 Shortcut 名称。
+    // 因此这里必须与 Resources/Shortcuts/ 目录下的文件名(bundledResourceName)保持一致。
+    static let defaultEnableName  = "EnableFocus"
+    static let defaultDisableName = "DisableFocus"
 
     func listInstalledNames() async throws -> [String] {
         let result = try await processRunner.run(

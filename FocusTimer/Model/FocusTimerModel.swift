@@ -77,8 +77,8 @@ final class FocusTimerModel {
     }
 
     static let defaultDuration: TimeInterval = 60 * 60
-    static let defaultEnableShortcut = "开启专注"
-    static let defaultDisableShortcut = "关闭专注"
+    static let defaultEnableShortcut = "EnableFocus"
+    static let defaultDisableShortcut = "DisableFocus"
 
     // MARK: - 初始化
 
