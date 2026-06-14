@@ -44,12 +44,16 @@ final class FocusTimerModel {
     /// 固定关闭 Focus 的 Shortcut 名称(不可编辑,与 Resources/Shortcuts/关闭专注.shortcut 对应)
     private(set) var disableShortcut: String
 
+    /// 倒计时结束后是否全屏提醒休息(用户可配置,默认开启)
+    var showRestReminder: Bool
+
     // MARK: - 依赖
 
     private let timer: TimerEngine
     private let focus: FocusModeControlling
     private let notifications: NotificationManaging
     private let installer: ShortcutInstalling
+    private let restReminder: RestReminderPresenting
     private let defaults: UserDefaults
 
     // MARK: - 内部状态
@@ -70,11 +74,13 @@ final class FocusTimerModel {
         static let totalDuration = "FocusTimer.totalDuration"
         static let enableShortcut = "FocusTimer.enableShortcut"
         static let disableShortcut = "FocusTimer.disableShortcut"
+        static let showRestReminder = "FocusTimer.showRestReminder"
     }
 
     static let defaultDuration: TimeInterval = 60 * 60
     static let defaultEnableShortcut = "开始专注"
     static let defaultDisableShortcut = "关闭专注"
+    static let defaultShowRestReminder = true   // 默认开启(用户已确认)
 
     // MARK: - 初始化
 
@@ -83,12 +89,14 @@ final class FocusTimerModel {
         focus: FocusModeControlling = FocusModeController.live(),
         notifications: NotificationManaging = NotificationManager.live(),
         installer: ShortcutInstalling = LiveShortcutInstaller(),
+        restReminder: RestReminderPresenting = RestReminderPresenter.live(),
         defaults: UserDefaults = .standard
     ) {
         self.timer = timer
         self.focus = focus
         self.notifications = notifications
         self.installer = installer
+        self.restReminder = restReminder
         self.defaults = defaults
 
         let stored = defaults.double(forKey: DefaultsKey.totalDuration)
@@ -100,13 +108,25 @@ final class FocusTimerModel {
 
         self.enableShortcut = Self.defaultEnableShortcut
         self.disableShortcut = Self.defaultDisableShortcut
+        self.showRestReminder = Self.loadOrMigrateShowRestReminder(defaults: defaults)
 
         self.state = TimerState(
             phase: .idle,
             totalDuration: initialDuration
         )
 
-        log.info("FocusTimerModel 初始化完成,totalDuration=\(initialDuration)s,enable=\(Self.defaultEnableShortcut, privacy: .public),disable=\(Self.defaultDisableShortcut, privacy: .public)")
+        log.info("FocusTimerModel 初始化完成,totalDuration=\(initialDuration)s,enable=\(Self.defaultEnableShortcut, privacy: .public),disable=\(Self.defaultDisableShortcut, privacy: .public),showRestReminder=\(self.showRestReminder)")
+    }
+
+    /// 读取并按需做一次性 migration:首次构造时,若 defaults 不存在该 key,把默认值写入。
+    /// 这样新用户和老用户升级都看到 defaultShowRestReminder = true。
+    /// static 是为了避开 init 中调用实例方法的 self 初始化顺序限制。
+    private static func loadOrMigrateShowRestReminder(defaults: UserDefaults) -> Bool {
+        let key = DefaultsKey.showRestReminder
+        if defaults.object(forKey: key) == nil {
+            defaults.set(Self.defaultShowRestReminder, forKey: key)
+        }
+        return defaults.bool(forKey: key)
     }
 
     // MARK: - 公开 API
@@ -121,6 +141,14 @@ final class FocusTimerModel {
         state.totalDuration = clamped
         defaults.set(clamped, forKey: DefaultsKey.totalDuration)
         log.info("设置时长: \(clamped)s (\(Int(clamped / 60)) 分钟)")
+    }
+
+    /// 修改「完成后全屏提醒休息」开关(随时可改,无状态限制)
+    func setShowRestReminder(_ enabled: Bool) {
+        guard showRestReminder != enabled else { return }
+        showRestReminder = enabled
+        defaults.set(enabled, forKey: DefaultsKey.showRestReminder)
+        log.info("设置全屏休息提醒: \(enabled ? "开启" : "关闭")")
     }
 
     /// 开始倒计时
@@ -319,6 +347,14 @@ final class FocusTimerModel {
 
         state.phase = .idle
         log.info("完成:回到 idle 状态")
+
+        // 按配置触发全屏休息提醒(默认开启)
+        if showRestReminder {
+            log.info("用户启用了全屏休息提醒,展示窗口")
+            restReminder.showRestReminder()
+        } else {
+            log.debug("全屏休息提醒已关闭,跳过")
+        }
     }
 
     private func scheduleCompletionNotification(at fireDate: Date) async {
@@ -359,4 +395,9 @@ final class FocusTimerModel {
             return formatted
         }
     }
+
+#if DEBUG
+    /// 单元测试 seam:直接驱动 handleCompletion 而无需走 start/sleep。
+    internal func _testHandleCompletion() async { await handleCompletion() }
+#endif
 }

@@ -23,6 +23,8 @@ struct MenuContent: View {
             Divider()
             shortcutSettings
             Divider()
+            restReminderSetting
+            Divider()
             controlButtons
             footer
         }
@@ -177,6 +179,24 @@ struct MenuContent: View {
     }
 
     @State private var showShortcutSettings = false
+
+    // MARK: - 全屏休息提醒
+
+    private var restReminderSetting: some View {
+        Toggle(isOn: Binding(
+            get: { model.showRestReminder },
+            set: { model.setShowRestReminder($0) }
+        )) {
+            VStack(alignment: .leading, spacing: 2) {
+                Text("倒计时结束后全屏提醒休息")
+                Text("关闭时保持原有行为(仅系统通知)。")
+                    .font(.caption2)
+                    .foregroundStyle(.secondary)
+            }
+        }
+        .toggleStyle(.switch)
+        .font(.callout)
+    }
 
     // MARK: - 控制按钮
 
