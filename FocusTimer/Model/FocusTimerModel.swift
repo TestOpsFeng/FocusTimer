@@ -13,7 +13,7 @@
 //
 //  Focus 控制策略:macOS 无公开 API 编程启用/禁用 Focus,故通过 /usr/bin/shortcuts
 //  CLI(Process 调用)触发用户在 Shortcuts App 中预配置的快捷指令。该 CLI 直接与
-//  com.apple.shortcuts 后台服务通信,不依赖 Shortcuts GUI 应用是否运行。名称在 UI 中可改。
+//  com.apple.shortcuts 后台服务通信,不依赖 Shortcuts GUI 应用是否运行。Shortcut 名称固定。
 //
 
 import Foundation

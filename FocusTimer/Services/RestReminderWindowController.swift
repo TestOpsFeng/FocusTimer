@@ -6,6 +6,7 @@
 //
 //  设计目标:
 //  - 覆盖每个 NSScreen 一块 borderless NSWindow(多显示器全覆盖)
+//  - 多屏共享同一个 RestBreakTimerModel,休息倒计时同步且铃声只响一次
 //  - level = .screenSaver,出现在其他全屏 App 之上
 //  - collectionBehavior 包含 .fullScreenAuxiliary,允许跨 Spaces
 //  - hidesOnDeactivate = false,⌘-Tab 切走时不消失
@@ -56,19 +57,22 @@ final class RestReminderNSWindow: NSWindow {
 final class RestReminderWindowController {
 
     private var windows: [RestReminderNSWindow] = []
+    private var timer: RestBreakTimerModel?
 
     func show() {
         // 重复调用时先清理旧的(防御性)
         dismiss()
 
         let screens = NSScreen.screens
+        let timer = RestBreakTimerModel()
+        self.timer = timer
         log.info("展示休息提醒窗口,screens=\(screens.count, privacy: .public)")
 
         for screen in screens {
             let win = RestReminderNSWindow { [weak self] in
                 self?.dismiss()
             }
-            let host = NSHostingView(rootView: RestReminderView(onDismiss: { [weak self] in
+            let host = NSHostingView(rootView: RestReminderView(timer: timer, onDismiss: { [weak self] in
                 self?.dismiss()
             }))
             host.frame = screen.frame
@@ -85,6 +89,8 @@ final class RestReminderWindowController {
     }
 
     func dismiss() {
+        timer?.cancel()
+        timer = nil
         guard !windows.isEmpty else { return }
         log.info("关闭休息提醒窗口")
         for w in windows {

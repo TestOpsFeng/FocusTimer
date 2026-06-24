@@ -9,7 +9,8 @@ macOS 14+ 菜单栏倒计时应用,倒计时期间自动启用系统「专注模
 - **Focus 自动切换**:开始 → 启用专注;暂停 → 专注保持;重置 / 完成 → 关闭专注。
 - **暂停 / 继续 / 重置**:倒计时可中断,恢复后从冻结的剩余时间继续,专注状态保持。
 - **系统通知**:倒计时完成时弹出系统通知。
-- **Focus 状态徽章**:弹窗中实时显示系统当前是否处于 Focus 状态(需授权)。
+- **全屏休息提醒**:倒计时自然完成后默认打开全屏「该休息了」提醒,可选择 5 / 15 / 30 分钟休息倒计时,结束后响铃。
+- **Focus 意图徽章**:弹窗中显示本 App 上一轮请求的 Focus ON/OFF 状态。
 
 ## 关键技术决策:为什么用 Shortcuts
 
@@ -69,12 +70,13 @@ open ~/Library/Developer/Xcode/DerivedData/FocusTimer-*/Build/Products/Debug/Foc
 1. 启动 App,菜单栏出现 `Focus 60:00`。
 2. 点击菜单栏图标 → 弹窗中调整时长 → 点击 **开始**。
 3. 系统会弹出权限请求:
-   - **Shortcuts 自动化权限**:首次运行 "开启专注" 时会请求(只弹一次)。**无需先手动打开 Shortcuts App。**
+   - **Shortcuts 自动化权限**:首次运行 "开始专注" 时会请求(只弹一次)。**无需先手动打开 Shortcuts App。**
    - **通知权限**:允许接收完成通知。
 4. 倒计时开始,菜单栏显示剩余时间,系统专注模式被启用。
 5. 暂停 → 倒计时冻结但 Focus 保持;继续 → 从冻结值继续。
 6. 重置 → 倒计时清零,Focus 关闭。
-7. 自然完成 → 通知弹出,Focus 关闭。
+7. 自然完成 → 通知弹出,Focus 关闭,默认显示全屏休息提醒。
+8. 在休息界面点击 `5:00` / `15:00` / `30:00` 开始休息倒计时;倒计时结束后系统铃声响一次,界面停留到手动关闭。
 
 ## 项目结构
 
@@ -93,15 +95,23 @@ FocusTimer/
 │   │   ├── FocusModeController.swift  # INFocusStatusCenter 读 + /usr/bin/shortcuts CLI 写
 │   │   ├── ShortcutInstaller.swift    # 检测/触发 Shortcuts App 导入(配合 .shortcut 资源)
 │   │   ├── ProcessRunner.swift        # 子进程调用抽象(可注入测试桩)
-│   │   └── NotificationManager.swift  # UNUserNotificationCenter 封装(含失败通知)
+│   │   ├── NotificationManager.swift  # UNUserNotificationCenter 封装(含失败通知)
+│   │   ├── RestBreakTimerModel.swift  # 休息提醒内的 5/15/30 分钟倒计时 + 铃声
+│   │   ├── RestReminderPresenting.swift
+│   │   └── RestReminderWindowController.swift  # 全屏休息提醒窗口
 │   ├── Views/
 │   │   ├── MenuBarLabel.swift   # 菜单栏文字
 │   │   ├── MenuContent.swift    # 弹窗主体
-│   │   └── DurationPicker.swift # 时长选择 UI
+│   │   ├── DurationPicker.swift # 时长选择 UI
+│   │   └── RestReminderView.swift
 │   └── Resources/
 │       ├── Assets.xcassets
+│       ├── Shortcuts/           # 开始专注.shortcut / 关闭专注.shortcut
 │       ├── Info.plist           # NSFocusStatusUsageDescription
 │       └── FocusTimer.entitlements
+├── docs/ARCHITECTURE.md
+├── PUBLISH.md
+├── SHORTCUTS_MEMO.md
 └── README.md
 ```
 
@@ -122,16 +132,19 @@ log show --predicate 'subsystem == "com.example.FocusTimer"' --info --debug --la
 - `ShortcutInstaller`:Shortcut 安装状态查询 + 导入对话框触发
 - `ProcessRunner`:子进程启动/退出/stdout/stderr 摘要
 - `NotificationManager`:通知权限 + 调度
+- `RestBreakTimerModel`:休息倒计时启动/完成
+- `RestReminderWindowController`:全屏休息提醒窗口展示/关闭
 - `App`:启动
 
 ## 已知限制
 
-1. **一键创建依赖 Bundle 内的 `.shortcut` 资源**:App 携带两个预制的 `.shortcut` 文件(`Resources/Shortcuts/EnableFocus.shortcut` + `DisableFocus.shortcut`)。如果文件丢失或损坏,「一键创建」按钮会弹「Bundle 缺少 EnableFocus.shortcut」错误。开发者(本仓库维护者)需手动从 Shortcuts App 重新导出并放回该目录。
-2. **Shortcut 触发失败时通过系统通知提示**:本应用通过 `/usr/bin/shortcuts` CLI 调用用户在 Shortcuts App 中预配置的「开启专注」/「关闭专注」。若 Shortcut 不存在、改名或未含「设置专注模式」动作,CLI 退出非 0,本应用会**通过系统通知弹窗**告知用户,并把 stderr 详情记录到 `os.Logger`(category=`FocusModeController`)。查看方式:`log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m`。
+1. **一键创建依赖 Bundle 内的 `.shortcut` 资源**:App 携带两个预制的 `.shortcut` 文件(`Resources/Shortcuts/开始专注.shortcut` + `关闭专注.shortcut`)。如果文件丢失或损坏,「一键创建」按钮会弹「Bundle 缺少 开始专注.shortcut」或「Bundle 缺少 关闭专注.shortcut」错误。开发者(本仓库维护者)需手动从 Shortcuts App 重新导出并放回该目录。
+2. **Shortcut 触发失败时通过系统通知提示**:本应用通过 `/usr/bin/shortcuts` CLI 调用用户在 Shortcuts App 中预配置的「开始专注」/「关闭专注」。若 Shortcut 不存在、改名或未含「设置专注模式」动作,CLI 退出非 0,本应用会**通过系统通知弹窗**告知用户,并把 stderr 详情记录到 `os.Logger`(category=`FocusModeController`)。查看方式:`log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m`。
 3. **强制退出 App 时 Focus 不会自动恢复**:v1 范围不处理 `NSApplicationWillTerminate` 钩子,异常退出后 Focus 可能保持开启。
 4. **未配置任何 Focus 模式时 Shortcut 内的"设置专注模式"动作会失败** — 在 Shortcuts App 的运行日志里可以看到。
 5. **`@Observable` + 每秒 tick**:`MenuBarLabel` 每秒重绘,但 `DateComponentsFormatter` 复用,无性能问题。
-6. **App Sandbox 默认关闭**:本地 dev 阶段不开启。分发时需要重新评估 Focus API 在沙箱下的行为。
+6. **Focus 徽章是 App 意图状态**:徽章显示本 App 上一轮 start/reset/complete 的请求结果,不是系统真实 Focus 状态探针。Shortcut 被用户取消或失败时,以通知和日志为准。
+7. **App Sandbox 默认关闭**:本地 dev 阶段不开启。分发时需要重新评估 `/usr/bin/shortcuts`、通知和 Focus 状态读取在沙箱下的行为。
 
 ## 状态机
 

@@ -49,22 +49,22 @@ struct ShortcutInstallerTests {
     func testListSingle() async throws {
         let runner = MockProcessRunner(result: ProcessResult(
             success: true, exitCode: 0,
-            stdout: "开启专注\n", stderr: ""
+            stdout: "开始专注\n", stderr: ""
         ))
         let installer = makeInstaller(runner: runner)
         let names = try await installer.listInstalledNames()
-        #expect(names == ["开启专注"])
+        #expect(names == ["开始专注"])
     }
 
     @Test("listInstalledNames: parses multiple shortcuts and trims whitespace")
     func testListMultiple() async throws {
         let runner = MockProcessRunner(result: ProcessResult(
             success: true, exitCode: 0,
-            stdout: "  开启专注  \n关闭专注\n\nFoo Bar\n", stderr: ""
+            stdout: "  开始专注  \n关闭专注\n\nFoo Bar\n", stderr: ""
         ))
         let installer = makeInstaller(runner: runner)
         let names = try await installer.listInstalledNames()
-        #expect(names == ["开启专注", "关闭专注", "Foo Bar"])
+        #expect(names == ["开始专注", "关闭专注", "Foo Bar"])
     }
 
     @Test("listInstalledNames: throws on non-zero exit")
@@ -102,8 +102,8 @@ struct ShortcutInstallerTests {
     func testStatusBothPresent() {
         let installer = makeInstaller()
         let s = installer.computeStatus(
-            installed: ["开启专注", "关闭专注", "Other"],
-            enableName: "开启专注", disableName: "关闭专注"
+            installed: ["开始专注", "关闭专注", "Other"],
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .bothPresent)
     }
@@ -113,7 +113,7 @@ struct ShortcutInstallerTests {
         let installer = makeInstaller()
         let s = installer.computeStatus(
             installed: ["关闭专注"],
-            enableName: "开启专注", disableName: "关闭专注"
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .enableMissing)
     }
@@ -122,8 +122,8 @@ struct ShortcutInstallerTests {
     func testStatusDisableMissing() {
         let installer = makeInstaller()
         let s = installer.computeStatus(
-            installed: ["开启专注"],
-            enableName: "开启专注", disableName: "关闭专注"
+            installed: ["开始专注"],
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .disableMissing)
     }
@@ -133,7 +133,7 @@ struct ShortcutInstallerTests {
         let installer = makeInstaller()
         let s = installer.computeStatus(
             installed: ["Other"],
-            enableName: "开启专注", disableName: "关闭专注"
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .bothMissing)
     }
@@ -141,10 +141,10 @@ struct ShortcutInstallerTests {
     @Test("computeStatus: exact match only, no fuzzy whitespace match")
     func testStatusExactMatchNoFuzzy() {
         let installer = makeInstaller()
-        // " 开启专注 " 中含空格,不应与 "开启专注" 匹配
+        // " 开始专注 " 中含空格,不应与 "开始专注" 匹配
         let s = installer.computeStatus(
-            installed: [" 开启专注 ", "关闭专注"],
-            enableName: "开启专注", disableName: "关闭专注"
+            installed: [" 开始专注 ", "关闭专注"],
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .enableMissing)
     }
@@ -154,7 +154,7 @@ struct ShortcutInstallerTests {
         let installer = makeInstaller()
         let s = installer.computeStatus(
             installed: [],
-            enableName: "开启专注", disableName: "关闭专注"
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .bothMissing)
     }
@@ -165,11 +165,11 @@ struct ShortcutInstallerTests {
     func testInstallationStatusEndToEnd() async throws {
         let runner = MockProcessRunner(result: ProcessResult(
             success: true, exitCode: 0,
-            stdout: "开启专注\n关闭专注\n", stderr: ""
+            stdout: "开始专注\n关闭专注\n", stderr: ""
         ))
         let installer = makeInstaller(runner: runner)
         let s = try await installer.installationStatus(
-            enableName: "开启专注", disableName: "关闭专注"
+            enableName: "开始专注", disableName: "关闭专注"
         )
         #expect(s == .bothPresent)
         #expect(s.isReady)
@@ -213,7 +213,7 @@ struct ShortcutInstallerTests {
     @Test("bundledShortcutURL: nil when resource missing in bundle")
     func testBundledURLMissing() {
         let installer = makeInstaller()
-        // /tmp 几乎肯定不含 EnableFocus.shortcut
+        // /tmp 几乎肯定不含 开始专注.shortcut
         let emptyBundle = Bundle(path: "/tmp") ?? .main
         let url = installer.bundledShortcutURL(for: .enable, bundle: emptyBundle)
         #expect(url == nil)

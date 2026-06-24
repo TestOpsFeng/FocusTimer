@@ -4,16 +4,16 @@
 //
 //  macOS 没有公开的 setFocus 编程 API。INFocusStatusCenter 仅提供只读访问。
 //  本实现采用以下方案:
-//  - 读: 通过 INFocusStatusCenter 读取当前 Focus 状态(用于 UI 展示)
+//  - 读: 通过 INFocusStatusCenter 读取当前 Focus 状态(保留给未来状态探针)
 //  - 写: 通过 /usr/bin/shortcuts CLI (Process) 调用用户在 Shortcuts App 中
-//        预配置的"开启专注"和"关闭专注"快捷指令。该 CLI 直接与
+//        预配置的"开始专注"和"关闭专注"快捷指令。该 CLI 直接与
 //        com.apple.shortcuts 后台服务通信,无需 Shortcuts GUI 应用先运行。
 //
 //  用户需提前在 Shortcuts App 中创建两个 Shortcut:
-//  - "开启专注" : 包含 "Set Focus" 动作,启用其默认专注模式
+//  - "开始专注" : 包含 "Set Focus" 动作,启用其默认专注模式
 //  - "关闭专注" : 包含 "Set Focus" 动作,关闭当前专注
 //
-//  Shortcut 名称可在弹窗的"设置"区域修改并保存到 UserDefaults。
+//  Shortcut 名称固定,由一键导入流程和 bundled .shortcut 文件名共同约束。
 //
 
 import Foundation
@@ -34,7 +34,7 @@ protocol FocusModeControlling {
 
     /// 触发 Shortcut 来切换专注模式
     /// - Parameters:
-    ///   - enabled: true=开启专注, false=关闭专注
+    ///   - enabled: true=开始专注, false=关闭专注
     ///   - enableShortcut: 开启时触发的 Shortcut 名称
     ///   - disableShortcut: 关闭时触发的 Shortcut 名称
     func setEnabled(

@@ -43,10 +43,10 @@ struct ProcessRunnerTests {
         let runner = LiveProcessRunner()
         let result = try await runner.run(
             executable: "/bin/echo",
-            arguments: ["开启专注", "关闭专注"]
+            arguments: ["开始专注", "关闭专注"]
         )
         #expect(result.success)
-        #expect(result.stdout.contains("开启专注"))
+        #expect(result.stdout.contains("开始专注"))
         #expect(result.stdout.contains("关闭专注"))
     }
 }

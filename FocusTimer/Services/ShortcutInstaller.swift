@@ -2,7 +2,7 @@
 //  ShortcutInstaller.swift
 //  FocusTimer
 //
-//  在 App 内一键创建 / 检测用户在 Shortcuts App 中的「开启专注 / 关闭专注」Shortcut。
+//  在 App 内一键创建 / 检测用户在 Shortcuts App 中的「开始专注 / 关闭专注」Shortcut。
 //
 //  - 检测:走 `shortcuts list` CLI 列出已安装的 Shortcut 名称,与 App 配置的
 //    enableShortcut / disableShortcut 对比,得到 InstallationStatus。
@@ -87,7 +87,7 @@ struct LiveShortcutInstaller: ShortcutInstalling {
         self.workspaceOpener = workspaceOpener
     }
 
-    // 默认 Shortcut 名称(与 .shortcut 文件内部的 Shortcut 名称必须一致)
+    // 默认 Shortcut 名称(与 .shortcut 文件名必须一致)
     // 注意:macOS 26 导出的签名 .shortcut 文件,导入时使用**文件名**作为 Shortcut 名称,
     // 而非 .shortcut 文件中原本保存的 Shortcut 名称。
     // 因此这里必须与 Resources/Shortcuts/ 目录下的文件名(bundledResourceName)保持一致。
@@ -150,14 +150,14 @@ struct LiveShortcutInstaller: ShortcutInstalling {
             throw NSError(
                 domain: "ShortcutInstaller",
                 code: 10,
-                userInfo: [NSLocalizedDescriptionKey: "Bundle 缺少 EnableFocus.shortcut"]
+                userInfo: [NSLocalizedDescriptionKey: "Bundle 缺少 开始专注.shortcut"]
             )
         }
         guard let disableURL = bundledShortcutURL(for: .disable, bundle: bundle) else {
             throw NSError(
                 domain: "ShortcutInstaller",
                 code: 11,
-                userInfo: [NSLocalizedDescriptionKey: "Bundle 缺少 DisableFocus.shortcut"]
+                userInfo: [NSLocalizedDescriptionKey: "Bundle 缺少 关闭专注.shortcut"]
             )
         }
 

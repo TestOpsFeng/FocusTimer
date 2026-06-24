@@ -17,8 +17,10 @@
 		439942E9666219E0EFEE3CB3 /* 开始专注.shortcut in Resources */ = {isa = PBXBuildFile; fileRef = F78245296509CE4C78D23FEC /* 开始专注.shortcut */; };
 		4F5DC4C3590878D2C5B99DE4 /* FocusTimerModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 10B896040F62EA123FE05DF8 /* FocusTimerModelTests.swift */; };
 		639BB24FC62E98327CE2491D /* TimerState.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB5767478094226883F9531A /* TimerState.swift */; };
+		659CDD20E4E9FC83CAF10C81 /* RestBreakTimerModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 05CFB3082A81AAF96FE7A416 /* RestBreakTimerModel.swift */; };
 		74EC7175AF7CD1C1444587BB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13D1C7F95D15E2ED4489A67E /* Assets.xcassets */; };
 		78F07D0DBEA13FA9A18BB163 /* MenuBarLabel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 69D105EC58FF850157F9F01A /* MenuBarLabel.swift */; };
+		7FDD2E44C00EC4874494F79E /* RestBreakTimerModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B52772D097CB08B6B72A6757 /* RestBreakTimerModelTests.swift */; };
 		95838F0EAD24CDCA69EB2008 /* RestReminderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 610B20A4AE89E0A38F364289 /* RestReminderView.swift */; };
 		B2ACCF9255F9F740509AC888 /* ShortcutInstaller.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */; };
 		B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B037EDD114FE0F742109FAB3 /* NotificationManager.swift */; };
@@ -43,6 +45,7 @@
 
 /* Begin PBXFileReference section */
 		00CAF80E1AE60E0A23933EFB /* 关闭专注.shortcut */ = {isa = PBXFileReference; path = "关闭专注.shortcut"; sourceTree = "<group>"; };
+		05CFB3082A81AAF96FE7A416 /* RestBreakTimerModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestBreakTimerModel.swift; sourceTree = "<group>"; };
 		07F2824A2999E00238CD7405 /* FocusPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusPhase.swift; sourceTree = "<group>"; };
 		0B685555669D3866AA935507 /* ProcessRunner.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProcessRunner.swift; sourceTree = "<group>"; };
 		10B896040F62EA123FE05DF8 /* FocusTimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FocusTimerModelTests.swift; sourceTree = "<group>"; };
@@ -61,6 +64,7 @@
 		9FD48856D6C8BC60F22D1CEB /* RestReminderPresenting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestReminderPresenting.swift; sourceTree = "<group>"; };
 		A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShortcutInstaller.swift; sourceTree = "<group>"; };
 		B037EDD114FE0F742109FAB3 /* NotificationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationManager.swift; sourceTree = "<group>"; };
+		B52772D097CB08B6B72A6757 /* RestBreakTimerModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestBreakTimerModelTests.swift; sourceTree = "<group>"; };
 		C9456AFF38E6818AA650D60C /* FocusTimer.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FocusTimer.entitlements; sourceTree = "<group>"; };
 		CDD32BBD3BE0A4C6FE36AD80 /* RestReminderWindowController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestReminderWindowController.swift; sourceTree = "<group>"; };
 		D56E6815C73BAC335C0D3A4D /* DurationPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DurationPicker.swift; sourceTree = "<group>"; };
@@ -76,6 +80,7 @@
 			children = (
 				10B896040F62EA123FE05DF8 /* FocusTimerModelTests.swift */,
 				245C747689FCB3524EBD63FA /* ProcessRunnerTests.swift */,
+				B52772D097CB08B6B72A6757 /* RestBreakTimerModelTests.swift */,
 				578CA45EACC928540874BAC5 /* ShortcutInstallerTests.swift */,
 			);
 			path = FocusTimerTests;
@@ -141,6 +146,7 @@
 				E3CD15ED76D1F93DEC490FDE /* FocusModeController.swift */,
 				B037EDD114FE0F742109FAB3 /* NotificationManager.swift */,
 				0B685555669D3866AA935507 /* ProcessRunner.swift */,
+				05CFB3082A81AAF96FE7A416 /* RestBreakTimerModel.swift */,
 				9FD48856D6C8BC60F22D1CEB /* RestReminderPresenting.swift */,
 				CDD32BBD3BE0A4C6FE36AD80 /* RestReminderWindowController.swift */,
 				A03F2F8307E99DE342FF9C1C /* ShortcutInstaller.swift */,
@@ -273,6 +279,7 @@
 				E38B5089E15ECABED840250F /* MenuContent.swift in Sources */,
 				B647ACBBF1ADAC7B49872D70 /* NotificationManager.swift in Sources */,
 				24C22C212D453B5A37E77759 /* ProcessRunner.swift in Sources */,
+				659CDD20E4E9FC83CAF10C81 /* RestBreakTimerModel.swift in Sources */,
 				364718129E75D00C404E7CDD /* RestReminderPresenting.swift in Sources */,
 				95838F0EAD24CDCA69EB2008 /* RestReminderView.swift in Sources */,
 				04D232E176EA70C45BFDAF2F /* RestReminderWindowController.swift in Sources */,
@@ -288,6 +295,7 @@
 			files = (
 				4F5DC4C3590878D2C5B99DE4 /* FocusTimerModelTests.swift in Sources */,
 				E0897013748094A760A1FF96 /* ProcessRunnerTests.swift in Sources */,
+				7FDD2E44C00EC4874494F79E /* RestBreakTimerModelTests.swift in Sources */,
 				3D2EE73A994161B2085A83D0 /* ShortcutInstallerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

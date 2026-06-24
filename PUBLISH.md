@@ -159,10 +159,12 @@ xcodegen generate
 - 实时日志:`/usr/bin/log show --predicate 'subsystem == "com.example.FocusTimer"' --info --debug --last 5m`
 - Force Quit 后重新启动
 
-### 持久化的总时长 / Shortcut 名称丢失
+### 持久化配置异常
 
 - 配置文件:`~/Library/Preferences/com.example.FocusTimer.plist`
 - 跟随 Bundle ID `com.example.FocusTimer`。**如果改了 `PRODUCT_BUNDLE_IDENTIFIER`,旧数据不会被新版本读到**
+- 当前持久化配置是总时长(`FocusTimer.totalDuration`)和全屏休息提醒开关(`FocusTimer.showRestReminder`)
+- Shortcut 名称已固定为「开始专注」/「关闭专注」。旧版可编辑名称 key(`FocusTimer.enableShortcut` / `FocusTimer.disableShortcut`)会在 App 初始化时移除
 - 查看内容:`defaults read com.example.FocusTimer`
 
 ### 启动崩溃
@@ -173,14 +175,14 @@ xcodegen generate
 
 App 通过 `/usr/bin/shortcuts` CLI(而非 `shortcuts://` URL scheme)触发 Shortcuts App 中预配置的快捷指令。该路径**不要求** Shortcuts App GUI 先运行——首次启动后即可直接切换专注,无需先手动打开 Shortcuts App。
 
-**首选恢复方式(无需手动)**:在弹窗「Focus 快捷指令设置」中点「一键创建 Shortcut」,Shortcuts App 依次弹出两个「Add '开启专注'?」「Add '关闭专注'?」对话框,点 Add Shortcut 即可。App 内部已携带预制的 `.shortcut` 文件,任何时候删除 Shortcut 都能一键重建。
+**首选恢复方式(无需手动)**:在弹窗「Focus 快捷指令设置」中点「一键创建 Shortcut」,Shortcuts App 依次弹出两个「Add '开始专注'?」「Add '关闭专注'?」对话框,点 Add Shortcut 即可。App 内部已携带预制的 `.shortcut` 文件,任何时候删除 Shortcut 都能一键重建。
 
 若 Focus 仍然没切换,可能原因及排查:
 
 1. **一键创建后状态仍异常**:查看 Bundle 是否真带资源:
    ```bash
-   ls -la /Applications/FocusTimer.app/Contents/Resources/EnableFocus.shortcut
-   ls -la /Applications/FocusTimer.app/Contents/Resources/DisableFocus.shortcut
+   ls -la /Applications/FocusTimer.app/Contents/Resources/开始专注.shortcut
+   ls -la /Applications/FocusTimer.app/Contents/Resources/关闭专注.shortcut
    ```
    若缺失,需从本仓库 `FocusTimer/Resources/Shortcuts/README.md` 的流程重新生成。
 2. **Shortcut 不存在 / 改名 / 拼写不一致**:本应用会**通过系统通知弹窗**告知失败原因,详情写入 `os.Logger`:
@@ -188,7 +190,7 @@ App 通过 `/usr/bin/shortcuts` CLI(而非 `shortcuts://` URL scheme)触发 Shor
    /usr/bin/log show --predicate 'subsystem == "com.example.FocusTimer" AND category == "FocusModeController"' --info --debug --last 5m
    ```
    在弹窗的"Focus 快捷指令设置"区域检查名称是否与 Shortcuts App 中一致。
-3. **手动验证 Shortcut 本身**:在 Terminal 中执行 `shortcuts run "开启专注"`,若报错说明 Shortcut 本身有问题(如「设置专注模式」动作被删除、Shortcut 私有、所在 iCloud 账户未登录等)。
+3. **手动验证 Shortcut 本身**:在 Terminal 中执行 `shortcuts run "开始专注"`,若报错说明 Shortcut 本身有问题(如「设置专注模式」动作被删除、Shortcut 私有、所在 iCloud 账户未登录等)。
 4. **首次运行的 Shortcuts 自动化权限**:首次执行时 macOS 会弹"FocusTimer wants to run shortcut…"的自动化授权,**必须点"允许"**。误点"拒绝"需到「系统设置 → 隐私与安全性 → 自动化」中重新允许。
 5. **未配置任何系统 Focus 模式**:在「系统设置 → 专注」中至少需要存在一个 Focus(勿扰/工作/个人等),否则「设置专注模式」动作无可用目标。
 
@@ -224,7 +226,9 @@ App 通过 `/usr/bin/shortcuts` CLI(而非 `shortcuts://` URL scheme)触发 Shor
 | `/Applications/FocusTimer.app` | **最终安装位置** |
 | `~/Library/Developer/Xcode/DerivedData/FocusTimer-*/Build/Products/Release/FocusTimer.app` | Release 构建产物 |
 | `~/Library/Developer/Xcode/DerivedData/FocusTimer-*/Build/Products/Debug/FocusTimer.app` | Debug 构建产物(开发用) |
-| `~/Library/Preferences/com.example.FocusTimer.plist` | UserDefaults 持久化(总时长、Shortcut 名) |
+| `~/Library/Preferences/com.example.FocusTimer.plist` | UserDefaults 持久化(总时长、全屏休息提醒开关) |
+| `FocusTimer/Resources/Shortcuts/开始专注.shortcut` | 打包进 App 的启用 Focus Shortcut |
+| `FocusTimer/Resources/Shortcuts/关闭专注.shortcut` | 打包进 App 的关闭 Focus Shortcut |
 | `~/Library/Logs/DiagnosticReports/` | 崩溃日志 |
 | `FocusTimer/Resources/Assets.xcassets/AppIcon.appiconset/` | 应用图标源 |
 | `project.yml` | XcodeGen 项目定义(改完需 `xcodegen generate`) |
@@ -238,7 +242,7 @@ App 通过 `/usr/bin/shortcuts` CLI(而非 `shortcuts://` URL scheme)触发 Shor
 pkill -f /Applications/FocusTimer.app
 rm -rf /Applications/FocusTimer.app
 
-# 可选:删除用户配置(下次安装会回到默认 60 分钟、默认 Shortcut 名)
+# 可选:删除用户配置(下次安装会回到默认 60 分钟、默认开启全屏休息提醒)
 rm -f ~/Library/Preferences/com.example.FocusTimer.plist
 ```
 
@@ -257,6 +261,8 @@ rm -f ~/Library/Preferences/com.example.FocusTimer.plist
 | `ShortcutInstaller` | 检测 Shortcut 安装状态 + 触发导入对话框 |
 | `ProcessRunner` | 子进程启动/退出/stdout/stderr 摘要 |
 | `NotificationManager` | 通知权限 + 调度/取消 + 失败时即时弹窗 |
+| `RestBreakTimerModel` | 休息倒计时启动/完成 |
+| `RestReminderWindowController` | 全屏休息提醒窗口展示/关闭 |
 
 按类别过滤:
 ```bash

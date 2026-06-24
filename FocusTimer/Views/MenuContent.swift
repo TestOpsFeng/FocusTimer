@@ -5,7 +5,7 @@
 //  点击菜单栏图标后的弹窗主体:
 //  - 头部:大字显示当前状态/剩余时间 + Focus 系统状态
 //  - 时长选择:15/30/45/60/90 + 自定义
-//  - Shortcut 配置:开启/关闭 Focus 的 Shortcut 名称(持久化到 UserDefaults)
+//  - Shortcut 配置:固定命名的开启/关闭 Focus Shortcut 安装状态与一键导入
 //  - 控制:Start / Pause / Resume / Reset
 //  - 底部:退出按钮
 //
